@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1017632833424",
+    "firebase_url": "https://comeloso-default-rtdb.firebaseio.com",
+    "project_id": "comeloso",
+    "storage_bucket": "comeloso.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1017632833424:android:33f001f36bb42de83a7d15",
+        "android_client_info": {
+          "package_name": "com.jose1060.comeloso_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1017632833424-8ma04fqpfbmviccs199e7nth5sgqm1ni.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuZbtHrlfR5sdsh4ExhRGRt8L1jKd6vYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1017632833424-8ma04fqpfbmviccs199e7nth5sgqm1ni.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1017632833424-kd3hasep53fssbcgjf7p6kulkbuibl5t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.jose1060.comelosoApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
