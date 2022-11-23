@@ -1,6 +1,8 @@
 import 'package:comeloso_app/constants/colors.dart';
+import 'package:comeloso_app/provider/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -101,7 +103,12 @@ class LoginPage extends StatelessWidget {
                             ),
 
                             MaterialButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  final provider =
+                                      Provider.of<GoogleSignInProvider>(context,
+                                          listen: false);
+                                  provider.googleLogin();
+                                },
                                 color: ColorConstants.primaryColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(31),
