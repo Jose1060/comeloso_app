@@ -72,6 +72,12 @@ class AppStyle {
     fontWeight: FontWeight.w400,
     color: Colors.grey.shade100,
   );
+
+  static TextStyle textIn1 = GoogleFonts.lato(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: Colors.grey.shade600,
+  );
 }
 
 const textStyle = TextStyle(

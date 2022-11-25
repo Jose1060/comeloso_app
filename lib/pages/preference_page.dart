@@ -80,6 +80,24 @@ class PreferenceRegisterPage extends StatelessWidget {
                       description:
                           "Si un dia cambias de parecer, puedes cambiarlo en opciones",
                     ),
+                    PreferenceOptions(
+                      preferencesList: preferencesList,
+                      carouselController: buttonCarouselController,
+                      color: Colors.pink.shade100,
+                      icon: FontAwesomeIcons.bowlFood,
+                      option1: 'Como de todo',
+                      option2: 'Vegetariano',
+                      option3: 'Vegano',
+                      subTitle: '¿🍗 o 🍅?',
+                      title: 'Dieta',
+                      value1: 'Todo',
+                      value2: 'Vegetariano',
+                      value3: 'Vegano',
+                      bgcolor: Colors.pink.shade100,
+                      description:
+                          "Si un dia cambias de parecer, puedes cambiarlo en opciones",
+                    ),
+                    CardBoxPrefStart(),
                   ],
                   carouselController: buttonCarouselController,
                   options: CarouselOptions(
@@ -148,7 +166,7 @@ class PreferenceOptions extends StatelessWidget {
                 radius: 40,
                 backgroundColor: Colors.white,
                 child: FaIcon(
-                  FontAwesomeIcons.dollarSign,
+                  icon,
                   color: color,
                   size: 50,
                 ),
@@ -207,6 +225,77 @@ class PreferenceOptions extends StatelessWidget {
                 description,
                 textAlign: TextAlign.center,
                 style: AppStyle.textOut1,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CardBoxPrefStart extends StatelessWidget {
+  const CardBoxPrefStart({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 350),
+      child: Card(
+        color: Colors.white,
+        elevation: 10,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12))),
+        child: Padding(
+          padding:
+              const EdgeInsets.only(bottom: 5, left: 30, right: 30, top: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CircleAvatar(
+                radius: 80,
+                backgroundColor: Colors.green,
+                child: FaIcon(
+                  FontAwesomeIcons.check,
+                  color: Colors.white,
+                  size: 100,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Terminamos",
+                textAlign: TextAlign.center,
+                style: AppStyle.titlesH2,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Gracias por reponder, espero con sinceridad",
+                style: AppStyle.paragraph2,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              MaterialButton(
+                onPressed: () {},
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                color: Colors.grey.shade200,
+                child: Text("Empezar"),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Estos datos iran cambiando dependiendo que lugares vayas agregando a favoritos o que recurrentemente asistas",
+                textAlign: TextAlign.center,
+                style: AppStyle.textIn1,
               ),
             ],
           ),
