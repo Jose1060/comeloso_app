@@ -35,6 +35,43 @@ class AppStyle {
       GoogleFonts.nunito(fontSize: 16.0, fontWeight: FontWeight.normal);
   static TextStyle inputTextStyle =
       GoogleFonts.roboto(fontSize: 10.0, fontWeight: FontWeight.w500);
+
+  // Headers textStyle
+
+  static TextStyle headerTextStyle = GoogleFonts.lato(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: Colors.white,
+  );
+  static TextStyle titlesH1 = GoogleFonts.lato(
+    fontSize: 30,
+    fontWeight: FontWeight.w600,
+    color: Colors.black,
+  );
+
+  static TextStyle titlesH2 = GoogleFonts.lato(
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+    color: Colors.black,
+  );
+
+  static TextStyle paragraph1 = GoogleFonts.lato(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
+
+  static TextStyle paragraph2 = GoogleFonts.lato(
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    color: Colors.black,
+  );
+
+  static TextStyle textOut1 = GoogleFonts.lato(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: Colors.grey.shade100,
+  );
 }
 
 const textStyle = TextStyle(
