@@ -2,10 +2,12 @@ import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:comeloso_app/constants/ui_constants.dart';
+import 'package:comeloso_app/provider/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 typedef AddPrefList = void Function(String value);
 
@@ -25,6 +27,18 @@ class PreferenceRegisterPage extends StatelessWidget {
           style: AppStyle.headerTextStyle,
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+              onPressed: () {
+                final provider =
+                    Provider.of<GoogleSignInProvider>(context, listen: false);
+                provider.logout();
+              },
+              icon: const FaIcon(
+                FontAwesomeIcons.doorOpen,
+                color: Colors.white,
+              ))
+        ],
       ),
       body: SingleChildScrollView(
         child: SafeArea(
