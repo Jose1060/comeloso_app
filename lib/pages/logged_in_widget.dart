@@ -1,35 +1,58 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:comeloso_app/models/user.dart';
 import 'package:comeloso_app/pages/preference_page.dart';
 import 'package:comeloso_app/provider/google_sign_in.dart';
 import 'package:comeloso_app/provider/user_data.dart';
+import 'package:comeloso_app/services/user_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LoggedInWidget extends StatelessWidget {
+class LoggedInWidget extends StatefulWidget {
   const LoggedInWidget({super.key});
 
   @override
+  State<LoggedInWidget> createState() => _LoggedInWidgetState();
+}
+
+class _LoggedInWidgetState extends State<LoggedInWidget> {
+  @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
-    final provider = Provider.of<UserDataProvider>(context, listen: false);
+    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
 
-    return StreamBuilder(
-      stream: FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid.toString())
-          .snapshots(),
-      builder: ((context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        provider.getDataUser(uid: user.uid);
-        if (provider.currentUser == null) {
-          return const PreferenceRegisterPage();
-        } else if (provider.currentUser != null) {
-          return LogWhitData(user: user);
+    return ValueListenableBuilder(
+      valueListenable: provider.userStatus,
+      builder: (BuildContext context, AuthStatus? value, Widget? child) {
+        switch (provider.userStatus.value) {
+          case AuthStatus.withData:
+            return LogWhitData();
+          case AuthStatus.withOutData:
+            return const PreferenceRegisterPage();
+          case AuthStatus.loading:
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  CircularProgressIndicator(),
+                  Text("Oli"),
+                ],
+              ),
+            );
         }
-        return const Center(
-          child: CircularProgressIndicator(),
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              CircularProgressIndicator(),
+              Text("Oli"),
+            ],
+          ),
         );
-      }),
+      },
+      child: const Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
@@ -37,13 +60,13 @@ class LoggedInWidget extends StatelessWidget {
 class LogWhitData extends StatelessWidget {
   const LogWhitData({
     Key? key,
-    required this.user,
   }) : super(key: key);
-
-  final User user;
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+    final UserOso? user = provider.userOso;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Logged In"),
@@ -51,8 +74,6 @@ class LogWhitData extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              final provider =
-                  Provider.of<GoogleSignInProvider>(context, listen: false);
               provider.logout();
             },
             child: const Text("Logout"),
@@ -74,13 +95,13 @@ class LogWhitData extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 40,
-              backgroundImage: NetworkImage(user.photoURL!),
+              backgroundImage: NetworkImage(user!.fotoAvatar!),
             ),
             const SizedBox(
               height: 15,
             ),
             Text(
-              "Name: ${user.displayName!}",
+              "Name: ${user.nombre}",
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -100,7 +121,7 @@ class LogWhitData extends StatelessWidget {
               height: 8,
             ),
             Text(
-              "Email: ${user.uid}",
+              "Email: ${user.email}",
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,

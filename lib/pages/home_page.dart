@@ -15,7 +15,6 @@ class HomePage extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          print("🐻" + snapshot.toString());
           if (snapshot.hasData) {
             return const LoggedInWidget();
           } else if (snapshot.hasError) {

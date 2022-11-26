@@ -20,6 +20,7 @@ class UserOsoDatabaseService {
     await docRef.get().then((doc) {
       if (doc.exists) {
         final data = UserOso.fromDocumentSnapshot(doc);
+        print("➡️ Usuario obtenido");
         return data;
       }
     });
