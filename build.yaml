@@ -3,7 +3,8 @@ targets:
     builders:
       artemis:
         options:
-          # custom configuration options!
           schema_mapping:
-            - schema: lib/services/graphql/schemas/restaurat_schema.graphql
+            - schema: lib/services/graphql/schemas/restaurant_schema.graphql
               querires_glob: lib/services/graphql/queries/**.graphql
+              output: lib/services/graphql/schemas/gql_api.dart
+              naming_scheme: simple
