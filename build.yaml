@@ -1,9 +1,11 @@
 targets:
   $default:
     builders:
-      artemis:
+      ferry_generator|graphql_builder:
+        enabled: true
         options:
-          # custom configuration options!
-          schema_mapping:
-            - schema: lib/services/graphql/schemas/restaurat_schema.graphql
-              querires_glob: lib/services/graphql/queries/**.graphql
+          schema: comeloso_app|lib/schema.graphql
+      ferry_generator|serializer_builder:
+        enabled: true
+        options:
+          schema: comeloso_app|lib/schema.graphql

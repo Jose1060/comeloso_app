@@ -9,6 +9,33 @@ import 'package:comeloso_app/utils/size_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:gql_http_link/gql_http_link.dart';
+import 'package:ferry/ferry.dart';
+
+import 'package:gql_http_link/gql_http_link.dart';
+import 'package:ferry/ferry.dart';
+import 'package:ferry_hive_store/ferry_hive_store.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+
+// Future<Client> initClient() async {
+//   await Hive.initFlutter();
+
+//   final box = await Hive.openBox("graphql");
+
+//   final store = HiveStore(box);
+
+//   / cache = Cache(store: store, possibleTypes: possibleTypesMap);
+
+//   final link = HttpLink('[path/to/endpoint]');
+
+//   final client = Client(
+//     link: link,
+//     cache: cache,
+//   );
+
+//   return client;
+// }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
