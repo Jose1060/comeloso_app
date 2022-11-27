@@ -16,13 +16,15 @@ enum AuthStatus {
   unauthenticated,
   loading,
   withData,
-  withOutData
+  withOutData,
+  withOutDataPreferences
 }
 
 class GoogleSignInProvider extends ChangeNotifier {
   final googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
-  UserOso? _userOso = null;
+  UserOso? _userOso;
+
   GoogleSignInAccount get user => _user!;
   var userOsoDatabaseService = UserOsoDatabaseService();
   final ValueNotifier<AuthStatus?> _userStatus =
@@ -48,20 +50,27 @@ class GoogleSignInProvider extends ChangeNotifier {
           .then((value) async {
         if (await userOsoDatabaseService.existUserData(uid: value.user!.uid) ==
             false) {
+          print("Crando usuario 🐻");
           final UserOso currentUser = UserOso(
             activo: false,
+            createdAt: Timestamp.now().toDate(),
             terminos: false,
             email: value.user!.email,
             fotoAvatar: value.user!.photoURL,
             nombre: value.user!.displayName,
+            genero: "",
+            pasos: 0,
+            preferencias: ["Comida Peruana"],
+            puntos: 0,
+            restVisitados: [],
+            restVisitadosFav: [],
           );
           userOsoDatabaseService
               .createDataUser(uid: value.user!.uid, userOsoData: currentUser)
-              .then((value) => _userOso = userOsoDatabaseService.getDataUser(
-                  uid: _user!.id) as UserOso?);
-          _userOso = await userOsoDatabaseService
-              .getDataUser(uid: value.user!.uid)
-              .whenComplete(() => notifyUserData(status: AuthStatus.withData));
+              .then((value) async => _userOso = await userOsoDatabaseService
+                  .getDataUser(uid: _user!.id)
+                  .whenComplete(
+                      () => notifyUserData(status: AuthStatus.withData)));
         } else {
           final UserOso currentUser = UserOso(
             email: value.user!.email,
@@ -70,9 +79,13 @@ class GoogleSignInProvider extends ChangeNotifier {
           );
           userOsoDatabaseService.pullDataUser(
               uid: value.user!.uid, userOsoData: currentUser);
+
           _userOso = await userOsoDatabaseService
               .getDataUser(uid: value.user!.uid)
               .whenComplete(() => notifyUserData(status: AuthStatus.withData));
+          if (_userOso?.preferencias == null) {
+            notifyUserData(status: AuthStatus.withOutDataPreferences);
+          }
         }
       });
     } catch (e) {
@@ -99,11 +112,12 @@ class GoogleSignInProvider extends ChangeNotifier {
   }
 
   UserOso? get userOso => _userOso;
+  set userOso(user) => _userOso = user;
   ValueNotifier<AuthStatus?> get userStatus => _userStatus;
 
   Future notifyUserData({required AuthStatus status}) async {
-    print("🐼 verificando status  ->" + status.toString());
-    print("🐼 verificando data  ->" + _userOso.toString());
+    print("🐼 verificando status  ->  " + status.toString());
+    print("🐼 verificando data  ->  " + _userOso.toString());
     _userStatus.value = status;
   }
 }

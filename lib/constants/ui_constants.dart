@@ -22,7 +22,7 @@ class AppStyle {
   ];
 
   static TextStyle mainTitle =
-      GoogleFonts.roboto(fontSize: 20.0, fontWeight: FontWeight.bold);
+      GoogleFonts.roboto(fontSize: 10.0, fontWeight: FontWeight.w400);
   static TextStyle separatorText =
       GoogleFonts.nunito(fontSize: 25.0, fontWeight: FontWeight.w600);
   static TextStyle phoneTitle = GoogleFonts.roboto(

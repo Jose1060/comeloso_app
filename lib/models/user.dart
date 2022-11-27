@@ -7,10 +7,10 @@ class UserOso {
   String? genero;
   int? numero;
   int? pasos;
-  List<String>? preferencias;
+  List? preferencias;
   int? puntos;
-  List<String>? restVisitados;
-  List<String>? restVisitadosFav;
+  List? restVisitados;
+  List? restVisitadosFav;
   bool? terminos;
   bool? activo;
   String? fotoAvatar;
@@ -38,7 +38,7 @@ class UserOso {
       'genero': genero,
       'numero': numero,
       'pasos': pasos,
-      'createdAt': Timestamp.now(),
+      'createdAt': createdAt,
       'restVisitados': restVisitados,
       'restVisitadosFav': restVisitadosFav,
       'terminos': terminos,
@@ -58,6 +58,21 @@ class UserOso {
   }
 
   UserOso.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc)
+      : nombre = doc.data()!["nombre"],
+        email = doc.data()!["email"],
+        genero = doc.data()!["genero"],
+        numero = doc.data()!['numero'],
+        pasos = doc.data()!["pasos"],
+        createdAt = doc.data()!["createdAt"].toDate(),
+        restVisitados = doc.data()!["restVisitados"],
+        restVisitadosFav = doc.data()!["restVisitadosFav"],
+        terminos = doc.data()!["terminos"],
+        activo = doc.data()!["activo"],
+        preferencias = doc.data()!["preferencias"],
+        puntos = doc.data()!["puntos"],
+        fotoAvatar = doc.data()!["fotoAvatar"];
+
+  UserOso.fromDocumentSnapshotOb(DocumentSnapshot<Map<String, dynamic>> doc)
       : nombre = doc.data()!["nombre"],
         email = doc.data()!["email"],
         genero = doc.data()!["genero"],

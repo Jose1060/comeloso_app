@@ -94,24 +94,11 @@ class PreferenceRegisterPage extends StatelessWidget {
                       description:
                           "Si un dia cambias de parecer, puedes cambiarlo en opciones",
                     ),
-                    PreferenceOptions(
-                      preferencesList: preferencesList,
+                    CardBoxPrefFood(
                       carouselController: buttonCarouselController,
-                      color: Colors.pink.shade100,
-                      icon: FontAwesomeIcons.bowlFood,
-                      option1: 'Como de todo',
-                      option2: 'Vegetariano',
-                      option3: 'Vegano',
-                      subTitle: '¿🍗 o 🍅?',
-                      title: 'Dieta',
-                      value1: 'Todo',
-                      value2: 'Vegetariano',
-                      value3: 'Vegano',
-                      bgcolor: Colors.pink.shade100,
-                      description:
-                          "Si un dia cambias de parecer, puedes cambiarlo en opciones",
+                      preferencesList: preferencesList,
                     ),
-                    CardBoxPrefStart(),
+                    const CardBoxPrefStart(),
                   ],
                   carouselController: buttonCarouselController,
                   options: CarouselOptions(
@@ -248,6 +235,153 @@ class PreferenceOptions extends StatelessWidget {
   }
 }
 
+class CardBoxPrefFood extends StatelessWidget {
+  const CardBoxPrefFood({
+    Key? key,
+    required this.carouselController,
+    required this.preferencesList,
+  }) : super(key: key);
+  final CarouselController carouselController;
+  final List<String> preferencesList;
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 350),
+      child: Card(
+        color: Colors.orange.shade100,
+        elevation: 10,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12))),
+        child: Padding(
+          padding:
+              const EdgeInsets.only(bottom: 5, left: 30, right: 30, top: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.orange.shade200,
+                child: const FaIcon(
+                  FontAwesomeIcons.faceSmileBeam,
+                  color: Colors.white,
+                  size: 33,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Comida",
+                textAlign: TextAlign.center,
+                style: AppStyle.titlesH2,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                "¿Que tipo de comida es la que te gusta mas?",
+                style: AppStyle.paragraph2,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: GridView(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  children: [
+                    optionCard("Comida Peruana", preferencesList, "Peruana",
+                        "lib/assets/peruvian_food.jpg", carouselController),
+                    optionCard("Comida China", preferencesList, "China",
+                        "lib/assets/peruvian_food.jpg", carouselController),
+                    optionCard(
+                        "Comida Venezolana",
+                        preferencesList,
+                        "Venezolana",
+                        "lib/assets/peruvian_food.jpg",
+                        carouselController),
+                    optionCard("Comida Italiana", preferencesList, "Italiana",
+                        "lib/assets/peruvian_food.jpg", carouselController),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                "Escoge al menos 2 tipos",
+                textAlign: TextAlign.center,
+                style: AppStyle.textIn1,
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+Widget optionCard(
+  String value,
+  List<String> preferenceList,
+  String name,
+  String image,
+  CarouselController carouselController,
+) {
+  bool containsIt = false;
+
+  for (var element in preferenceList) {
+    print(element);
+    if (element == value) {
+      print(containsIt);
+      carouselController.jumpToPage(4);
+      setState() {
+        containsIt = true;
+      }
+    } else {
+      containsIt = false;
+    }
+  }
+  return InkWell(
+      onTap: () {
+        preferenceList.add(value);
+        print(preferenceList);
+      },
+      child: Container(
+          margin: const EdgeInsets.all(2),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("lib/assets/peruvian_food.jpg"),
+              fit: BoxFit.cover,
+            ),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: Card(
+            color: Colors.transparent,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const Divider(),
+                ],
+              ),
+            ),
+          )));
+}
+
 class CardBoxPrefStart extends StatelessWidget {
   const CardBoxPrefStart({
     Key? key,
@@ -268,7 +402,7 @@ class CardBoxPrefStart extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 80,
                 backgroundColor: Colors.green,
                 child: FaIcon(
@@ -319,7 +453,7 @@ class CardBoxPrefStart extends StatelessWidget {
   }
 }
 
-class OptionButton extends StatelessWidget {
+class OptionButton extends StatefulWidget {
   final String label;
   final List<String> preferences;
   final String value;
@@ -334,14 +468,20 @@ class OptionButton extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<OptionButton> createState() => _OptionButtonState();
+}
+
+class _OptionButtonState extends State<OptionButton> {
+  @override
   Widget build(BuildContext context) {
     bool containsIt = false;
 
-    for (var element in preferences) {
+    for (var element in widget.preferences) {
       print(element);
-      if (element == value) {
+      if (element == widget.value) {
         print(containsIt);
-        carouselController.nextPage();
+        widget.carouselController.jumpToPage(4);
+
         containsIt = true;
       } else {
         containsIt = false;
@@ -353,14 +493,14 @@ class OptionButton extends StatelessWidget {
       color: Colors.grey.shade200,
       onPressed: () {
         if (containsIt == false) {
-          preferences.add(value);
+          widget.preferences.add(widget.value);
         }
-        carouselController.nextPage();
-        print(preferences);
+        widget.carouselController.jumpToPage(4);
+        print(widget.preferences);
       },
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
       child: Text(
-        label,
+        widget.label,
         textAlign: TextAlign.center,
       ),
     );
