@@ -10,12 +10,12 @@ class AppTheme {
 
   static const Color _scaffoldColorLight = Color(0xfff5f5f5);
 
-  static const Color _primaryColorLight = Color(0xff5b2263);
+  static const Color _primaryColorLight = Color.fromARGB(255, 249, 159, 56);
   static const Color _buttonColor = Color(0xfff6596e);
 
   static const Color _secondaryColorLight = Color(0xfff5ded3);
 
-  static const Color _errorColorLight = Color(0xffb00020);
+  static const Color _errorColorLight = Color.fromARGB(255, 176, 0, 32);
 
   ///DARK MODE
   ///

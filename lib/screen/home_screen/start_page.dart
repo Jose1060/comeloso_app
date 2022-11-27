@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comeloso_app/animations/animations.dart';
 import 'package:comeloso_app/animations/slide_animation.dart';
@@ -7,6 +9,8 @@ import 'package:comeloso_app/provider/google_sign_in.dart';
 import 'package:comeloso_app/screen/home_screen/widgets/category_list_view.dart';
 import 'package:comeloso_app/screen/home_screen/widgets/clipped_container.dart';
 import 'package:comeloso_app/screen/home_screen/widgets/vendor_card.dart';
+import 'package:comeloso_app/screen/vendor_screen/vendor_screen.dart';
+import 'package:comeloso_app/utils/navigation.dart';
 import 'package:comeloso_app/utils/ui_helper.dart';
 import 'package:comeloso_app/widgets/custom_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,41 +25,95 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
+  late double _height;
+
+  final _duration = const Duration(milliseconds: 1750);
+  final _psudoDuration = const Duration(milliseconds: 150);
+
+  _navigate() async {
+    //Animate screen container from bottom to top
+    await _animateContainerFromBottomToTop();
+
+    await Navigation.push(
+      context,
+      customPageTransition: PageTransition(
+        child: const VendorScreen(),
+        type: PageTransitionType.fadeIn,
+      ),
+    );
+
+    await _animateContainerFromTopToBottom();
+  }
+
+  _animateContainerFromBottomToTop() async {
+    //Animate back to default value
+    _height = MediaQuery.of(context).padding.top + rh(50);
+    setState(() {});
+
+    //Wait till animation is finished
+    await Future.delayed(_duration);
+  }
+
+  _animateContainerFromTopToBottom() async {
+    //Wait
+    await Future.delayed(_psudoDuration);
+
+    //Animate from top to bottom
+    _height = MediaQuery.of(context).size.height;
+    setState(() {});
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    //Default height
+    _height = 0;
+    setState(() {});
+
+    //Animate Container from Top to bottom
+    Timer(const Duration(milliseconds: 50), () {
+      _animateContainerFromTopToBottom();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
     final user = FirebaseAuth.instance.currentUser!;
-    late double _height;
-
-    final _duration = const Duration(milliseconds: 750);
-    final _psudoDuration = const Duration(milliseconds: 150);
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       body: SlideAnimation(
-        begin: Offset(0, 400),
-        duration: const Duration(milliseconds: 750),
+        begin: const Offset(0, 400),
+        duration: _duration,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 750),
+          height: _height,
+          duration: _duration,
           padding: EdgeInsets.only(bottom: rh(20)),
           curve: Curves.fastOutSlowIn,
-          child: SingleChildScrollView(
-            child: StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(user.uid.toString())
-                  .snapshots(),
-              builder: ((context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasData && snapshot.data!.exists) {
-                  final userData = snapshot.data!;
-                  final userDataOso = UserOso.fromDocumentSnapshot(userData);
-                  provider.userOso = userDataOso;
-                  UserOso globalUser = provider.userOso!;
-                  return Column(
+          decoration: BoxDecoration(
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
+          child: StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection('users')
+                .doc(user.uid.toString())
+                .snapshots(),
+            builder: ((context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasData && snapshot.data!.exists) {
+                final userData = snapshot.data!;
+                final userDataOso = UserOso.fromDocumentSnapshot(userData);
+                provider.userOso = userDataOso;
+                UserOso globalUser = provider.userOso!;
+                return SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const CustomAppBar(
@@ -100,7 +158,6 @@ class _StartPageState extends State<StartPage> {
                       ),
                       SizedBox(height: rh(20)),
                       ClippedContainer(
-                        height: rh(120),
                         backgroundColor:
                             Theme.of(context).colorScheme.secondary,
                         child: const CategoryListView(),
@@ -116,8 +173,10 @@ class _StartPageState extends State<StartPage> {
                           intervalStart: 0.4,
                           duration: const Duration(milliseconds: 2250),
                           child: ListView.separated(
-                            padding: const EdgeInsets.symmetric(horizontal: 0),
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: vendorList.length,
+                            scrollDirection: Axis.vertical,
+                            padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             separatorBuilder:
                                 (BuildContext context, int index) {
@@ -127,30 +186,34 @@ class _StartPageState extends State<StartPage> {
                                 indent: rw(20),
                               );
                             },
-                            itemBuilder: ((context, index) {
-                              return VendorCard(
-                                imagePath: vendorList[index]['imagePath'],
-                                name: vendorList[index]['name'],
-                                rating: vendorList[index]['rating'].toString(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: _navigate,
+                                child: VendorCard(
+                                  imagePath: vendorList[index]['imagePath'],
+                                  name: vendorList[index]['name'],
+                                  rating:
+                                      vendorList[index]['rating'].toString(),
+                                ),
                               );
-                            }),
+                            },
                           ),
                         ),
                       )
                     ],
-                  );
-                }
-                return Center(
-                  child: Text(
-                    "Hola",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText1!
-                        .copyWith(fontSize: rf(12), height: 1.5),
                   ),
                 );
-              }),
-            ),
+              }
+              return Center(
+                child: Text(
+                  "Hola",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText1!
+                      .copyWith(fontSize: rf(12), height: 1.5),
+                ),
+              );
+            }),
           ),
         ),
       ),

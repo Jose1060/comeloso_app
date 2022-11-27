@@ -24,6 +24,7 @@ class _CategoryListViewState extends State<CategoryListView> {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
+              print("hola del clip");
               setState(() {
                 _selectedIndex = index;
               });

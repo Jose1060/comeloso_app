@@ -1,0 +1,9 @@
+targets:
+  $default:
+    builders:
+      artemis:
+        options:
+          # custom configuration options!
+          schema_mapping:
+            - schema: lib/services/graphql/schemas/restaurat_schema.graphql
+              querires_glob: lib/services/graphql/queries/**.graphql

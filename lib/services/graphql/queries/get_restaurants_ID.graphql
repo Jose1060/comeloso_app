@@ -1,0 +1,19 @@
+query Variosrestaurantes($variosrestaurantesId: [ID]) {
+	Variosrestaurantes(id: $variosrestaurantesId) {
+		id
+		imagen
+		descripcion
+		latitud
+		longitud
+		nombre
+		telefono
+		total_puntos
+		email
+		etiquetas
+		direccion
+		calificaciones {
+			calificacion
+		}
+		N_calificaciones
+	}
+}
