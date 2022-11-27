@@ -1,9 +1,0 @@
-mutation CreateComentario($idRest: ID!, $comentario: ComentarioInput!) {
-	createComentario(idRest: $idRest, Comentario: $comentario) {
-		comentarios {
-			contenido
-			idRestaurante
-			idUsuario
-		}
-	}
-}
