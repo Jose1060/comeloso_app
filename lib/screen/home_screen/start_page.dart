@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comeloso_app/animations/animations.dart';
 import 'package:comeloso_app/animations/slide_animation.dart';
 import 'package:comeloso_app/data.dart';
+import 'package:comeloso_app/models/restaurant.dart';
 import 'package:comeloso_app/models/user.dart';
 import 'package:comeloso_app/provider/google_sign_in.dart';
 import 'package:comeloso_app/screen/home_screen/widgets/category_list_view.dart';
@@ -11,6 +12,7 @@ import 'package:comeloso_app/screen/home_screen/widgets/clipped_container.dart';
 import 'package:comeloso_app/screen/home_screen/widgets/vendor_card.dart';
 import 'package:comeloso_app/screen/map_screen/travel_tracking_page.dart';
 import 'package:comeloso_app/screen/vendor_screen/vendor_screen.dart';
+import 'package:comeloso_app/services/remote_services.dart';
 import 'package:comeloso_app/utils/navigation.dart';
 import 'package:comeloso_app/utils/ui_helper.dart';
 import 'package:comeloso_app/widgets/custom_widgets.dart';
@@ -91,6 +93,24 @@ class _StartPageState extends State<StartPage> {
     Timer(const Duration(milliseconds: 50), () {
       _animateContainerFromTopToBottom();
     });
+  }
+
+  List<Restaurant>? restaurants;
+  var isLoaded = false;
+
+  getData() async {
+    restaurants = await RemoteService().getRestaurants();
+    if (restaurants != null) {
+      setState(() {
+        isLoaded = true;
+        print("$isLoaded data ---> $restaurants");
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    getData();
   }
 
   @override
@@ -188,32 +208,51 @@ class _StartPageState extends State<StartPage> {
                           begin: const Offset(0, 100),
                           intervalStart: 0.4,
                           duration: const Duration(milliseconds: 2250),
-                          child: ListView.separated(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: vendorList.length,
-                            scrollDirection: Axis.vertical,
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return Divider(
-                                height: rh(space4x),
-                                endIndent: rw(20),
-                                indent: rw(20),
-                              );
-                            },
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: _navigate,
-                                child: VendorCard(
-                                  imagePath: vendorList[index]['imagePath'],
-                                  name: vendorList[index]['name'],
-                                  rating:
-                                      vendorList[index]['rating'].toString(),
-                                ),
-                              );
-                            },
-                          ),
+                          child: FutureBuilder(
+                              future: RemoteService().getRestaurants(),
+                              builder: (BuildContext context, restaurantsSnap) {
+                                //final restaurants =
+                                //Restaurant.fromJson(snapshot.data!.data()!);
+
+                                if (restaurantsSnap.hasData) {
+                                  return ListView.separated(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: restaurantsSnap.data!.length,
+                                    scrollDirection: Axis.vertical,
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    separatorBuilder:
+                                        (BuildContext context, int index) {
+                                      return Divider(
+                                        height: rh(space4x),
+                                        endIndent: rw(20),
+                                        indent: rw(20),
+                                      );
+                                    },
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var rest = restaurantsSnap.data![index];
+                                      print("Hola 🐻‍❄️$rest");
+                                      return GestureDetector(
+                                          onTap: _navigate,
+                                          child: VendorCard(
+                                            imagePath: rest.imagen!,
+                                            name: rest.nombre!,
+                                            rating: rest.promedio!.toString(),
+                                          ));
+                                    },
+                                  );
+                                } else if (restaurantsSnap.hasError) {
+                                  return Center(
+                                    child: Text(snapshot.error.toString()),
+                                  );
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
+                              }),
                         ),
                       )
                     ],

@@ -27,7 +27,7 @@ class ProductItem extends StatelessWidget {
               width: rh(space4x),
               child: AspectRatio(
                 aspectRatio: 1,
-                child: Image.asset(
+                child: Image.network(
                   imagePath,
                   // width: rw(space4x),
                   // height: rh(space3x),

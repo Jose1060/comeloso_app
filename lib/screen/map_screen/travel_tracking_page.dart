@@ -26,42 +26,12 @@ class TravelTrackingPage extends StatefulWidget {
 
 class _TravelTrackingPageState extends State<TravelTrackingPage> {
   List<LatLng> polylineCoordinates = [];
-
-  void getPolylinesPoints() async {
-    PolylinePoints polylinePoints = PolylinePoints();
-
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-        google_api_key,
-        PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
-        PointLatLng(destination.latitude, destination.longitude));
-
-    if (result.points.isNotEmpty) {
-      result.points.forEach(
-        (PointLatLng point) => polylineCoordinates.add(
-          LatLng(point.latitude, point.longitude),
-        ),
-      );
-      setState(() {});
-    }
-  }
-
-  final Completer<GoogleMapController> _controler = Completer();
-
-  static const LatLng sourceLocation = LatLng(37.33500926, -122.03272188);
-  static const LatLng destination = LatLng(37.33429383, -122.06600055);
+  final Completer<GoogleMapController> _controller = Completer();
+  static const LatLng sourceLocation =
+      LatLng(-16.376027177050197, -71.50814298847764);
+  static const LatLng destination =
+      LatLng(-16.385942810228553, -71.51120962101196);
   LocationData? currentLocation;
-
-  void getCurrentLocation() {
-    Location location = Location();
-
-    location.getLocation().then(
-      (location) {
-        debugPrint("🐻 --> " + location.toString());
-        currentLocation = location;
-      },
-    );
-    setState(() {});
-  }
 
   late double _height;
 
@@ -108,15 +78,48 @@ class _TravelTrackingPageState extends State<TravelTrackingPage> {
     setState(() {});
   }
 
+  void getPolylinesPoints() async {
+    PolylinePoints polylinePoints = PolylinePoints();
+    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+        google_api_key,
+        PointLatLng(sourceLocation.latitude, sourceLocation.longitude),
+        PointLatLng(destination.latitude, destination.longitude));
+    if (result.points.isNotEmpty) {
+      result.points.forEach(
+        (PointLatLng point) => polylineCoordinates.add(
+          LatLng(point.latitude, point.longitude),
+        ),
+      );
+      setState(() {});
+    }
+  }
+
+  void getCurrentLocation() async {
+    Location location = Location();
+    final loc = await location.getLocation();
+    currentLocation = loc;
+
+    GoogleMapController googleMapController = await _controller.future;
+    location.onLocationChanged.listen((newLoc) {
+      currentLocation = newLoc;
+      googleMapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            zoom: 19.5,
+            target: LatLng(newLoc.latitude!, newLoc.longitude!),
+          ),
+        ),
+      );
+    });
+    setState(() {});
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     //Default height
-
     _height = MediaQuery.of(context).padding.top + rh(50);
     setState(() {});
-
     //Animate Container from Top to bottom
     _animateContainerFromTopToBottom();
   }
@@ -141,19 +144,29 @@ class _TravelTrackingPageState extends State<TravelTrackingPage> {
           color: Theme.of(context).scaffoldBackgroundColor,
         ),
         child: currentLocation == null
-            ? const Center(child: Text("Loading..."))
+            ? const Center(
+                child: Text("Loading"),
+              )
             : Stack(
                 children: [
                   GoogleMap(
-                    initialCameraPosition:
-                        CameraPosition(target: sourceLocation, zoom: 14.5),
+                    initialCameraPosition: CameraPosition(
+                        target: LatLng(currentLocation!.latitude!,
+                            currentLocation!.longitude!),
+                        zoom: 13.5),
                     polylines: {
                       Polyline(
                           polylineId: PolylineId("route"),
                           points: polylineCoordinates,
-                          color: primaryColor)
+                          color: primaryColor,
+                          width: 6),
                     },
                     markers: {
+                      Marker(
+                        markerId: MarkerId("currentLocation"),
+                        position: LatLng(currentLocation!.latitude!,
+                            currentLocation!.longitude!),
+                      ),
                       Marker(
                         markerId: MarkerId("source"),
                         position: sourceLocation,
@@ -163,14 +176,21 @@ class _TravelTrackingPageState extends State<TravelTrackingPage> {
                         position: destination,
                       ),
                     },
+                    onMapCreated: (mapController) {
+                      _controller.complete(mapController);
+                    },
                   ),
-                  ClippedContainer(
-                    backgroundColor: Colors.white,
-                    height: rh(150),
-                    child: VendorInfoCard(
-                      title: 'New York Donut',
-                      rating: 4.2,
-                      sideImagePath: 'lib/assets/images/temp_vendor_logo.png',
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: ClippedContainer(
+                      backgroundColor: Colors.white,
+                      height: rh(150),
+                      child: VendorInfoCard(
+                        title: 'New York Donut',
+                        rating: 4.2,
+                        sideImagePath: 'lib/assets/images/temp_vendor_logo.png',
+                      ),
                     ),
                   ),
                 ],

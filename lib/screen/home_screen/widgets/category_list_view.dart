@@ -1,3 +1,5 @@
+import 'package:comeloso_app/screen/profile_screen/profile_user.dart';
+import 'package:comeloso_app/screen/travel_oso/travel_oso.dart';
 import 'package:flutter/material.dart';
 import 'package:comeloso_app/utils/ui_helper.dart';
 import 'package:comeloso_app/data.dart';
@@ -40,6 +42,36 @@ class _CategoryListViewState extends State<CategoryListView> {
                 name: "Mapa",
                 backgroundColor: const Color(0xfff2e3db),
                 icon: const FaIcon(FontAwesomeIcons.map)),
+          ),
+          GestureDetector(
+            onTap: () async {
+              await Navigation.push(
+                context,
+                customPageTransition: PageTransition(
+                  child: const TravelOso(),
+                  type: PageTransitionType.fadeIn,
+                ),
+              );
+            },
+            child: CategoryItem(
+                name: "Vamo a caminar",
+                backgroundColor: const Color(0xfff2e3db),
+                icon: const FaIcon(FontAwesomeIcons.compass)),
+          ),
+          GestureDetector(
+            onTap: () async {
+              await Navigation.push(
+                context,
+                customPageTransition: PageTransition(
+                  child: const ProfileUser(),
+                  type: PageTransitionType.fadeIn,
+                ),
+              );
+            },
+            child: CategoryItem(
+                name: "PerfilOso",
+                backgroundColor: const Color(0xfff2e3db),
+                icon: const FaIcon(FontAwesomeIcons.userAstronaut)),
           )
         ],
       ),
