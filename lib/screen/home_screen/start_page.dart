@@ -9,6 +9,7 @@ import 'package:comeloso_app/provider/google_sign_in.dart';
 import 'package:comeloso_app/screen/home_screen/widgets/category_list_view.dart';
 import 'package:comeloso_app/screen/home_screen/widgets/clipped_container.dart';
 import 'package:comeloso_app/screen/home_screen/widgets/vendor_card.dart';
+import 'package:comeloso_app/screen/map_screen/travel_tracking_page.dart';
 import 'package:comeloso_app/screen/vendor_screen/vendor_screen.dart';
 import 'package:comeloso_app/utils/navigation.dart';
 import 'package:comeloso_app/utils/ui_helper.dart';
@@ -38,6 +39,21 @@ class _StartPageState extends State<StartPage> {
       context,
       customPageTransition: PageTransition(
         child: const VendorScreen(),
+        type: PageTransitionType.fadeIn,
+      ),
+    );
+
+    await _animateContainerFromTopToBottom();
+  }
+
+  _navigateMap() async {
+    //Animate screen container from bottom to top
+    await _animateContainerFromBottomToTop();
+
+    await Navigation.push(
+      context,
+      customPageTransition: PageTransition(
+        child: const TravelTrackingPage(),
         type: PageTransitionType.fadeIn,
       ),
     );
@@ -160,7 +176,7 @@ class _StartPageState extends State<StartPage> {
                       ClippedContainer(
                         backgroundColor:
                             Theme.of(context).colorScheme.secondary,
-                        child: const CategoryListView(),
+                        child: const CategoryListView(), //! Aca esta la vaina
                       ),
                       SizedBox(
                         height: rh(space5x),

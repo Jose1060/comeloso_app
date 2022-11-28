@@ -56,6 +56,9 @@ dependencies:
   rive: ^0.9.1
   google_fonts: ^3.0.1
   build_runner: ^2.1.11
+  flutter_polyline_points: ^1.0.0
+  google_maps_flutter: ^2.2.1
+  location: ^4.4.0
 
 dev_dependencies:
   flutter_test:

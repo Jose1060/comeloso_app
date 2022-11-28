@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:comeloso_app/utils/ui_helper.dart';
 import 'package:comeloso_app/data.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../../../animations/page_transition.dart';
+import '../../../utils/navigation.dart';
+import '../../map_screen/travel_tracking_page.dart';
 
 class CategoryListView extends StatefulWidget {
   const CategoryListView({Key? key}) : super(key: key);
@@ -16,32 +21,27 @@ class _CategoryListViewState extends State<CategoryListView> {
   Widget build(BuildContext context) {
     return SizedBox(
       height: rh(120),
-      child: ListView.builder(
+      child: ListView(
         shrinkWrap: true,
         padding: const EdgeInsets.symmetric(horizontal: space2x),
         scrollDirection: Axis.horizontal,
-        itemCount: categoryIconList.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () {
-              print("hola del clip");
-              setState(() {
-                _selectedIndex = index;
-              });
+        children: [
+          GestureDetector(
+            onTap: () async {
+              await Navigation.push(
+                context,
+                customPageTransition: PageTransition(
+                  child: const TravelTrackingPage(),
+                  type: PageTransitionType.fadeIn,
+                ),
+              );
             },
             child: CategoryItem(
-              name: name[index],
-              backgroundColor: _selectedIndex == index
-                  ? Colors.white
-                  : const Color(0xfff2e3db),
-              icon: Image.asset(
-                categoryIconList[index],
-                width: rw(35),
-                height: rh(25),
-              ),
-            ),
-          );
-        },
+                name: "Mapa",
+                backgroundColor: const Color(0xfff2e3db),
+                icon: const FaIcon(FontAwesomeIcons.map)),
+          )
+        ],
       ),
     );
   }

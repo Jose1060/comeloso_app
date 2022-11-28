@@ -1,5 +1,8 @@
+import 'package:comeloso_app/provider/google_sign_in.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../../../utils/ui_helper.dart';
 import '../../../utils/utils.dart';
@@ -100,21 +103,25 @@ class CustomAppBar extends StatelessWidget {
 
                 //Actions
                 if (showOptions)
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        CIcons.fromMaterial(
-                          icon: Icons.shopping_bag_outlined,
-                          semanticLabel: 'Bag',
-                        ),
-                        SizedBox(width: rw(space3x)),
-                        CIcons.fromMaterial(
-                          icon: Icons.favorite_outline,
-                          semanticLabel: 'Heart',
-                        ),
-                      ],
+                  GestureDetector(
+                    onTap: () {
+                      final provider = Provider.of<GoogleSignInProvider>(
+                          context,
+                          listen: false);
+                      provider.logout();
+                    },
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(width: rw(space3x)),
+                          CIcons.fromMaterial(
+                            icon: FontAwesomeIcons.doorOpen,
+                            semanticLabel: 'Leave',
+                          ),
+                        ],
+                      ),
                     ),
                   ),
               ],

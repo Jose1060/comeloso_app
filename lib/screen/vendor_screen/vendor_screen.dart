@@ -111,6 +111,7 @@ class _VendorScreenState extends State<VendorScreen> {
                     Positioned(
                       child: CustomAppBar(
                         onBackTap: _navigateBack,
+                        showOptions: false,
                       ),
                     ),
                     const Positioned(
