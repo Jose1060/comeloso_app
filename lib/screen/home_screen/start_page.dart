@@ -18,6 +18,7 @@ import 'package:comeloso_app/utils/ui_helper.dart';
 import 'package:comeloso_app/widgets/custom_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
 
 class StartPage extends StatefulWidget {
@@ -33,14 +34,16 @@ class _StartPageState extends State<StartPage> {
   final _duration = const Duration(milliseconds: 1750);
   final _psudoDuration = const Duration(milliseconds: 150);
 
-  _navigate() async {
+  _navigate(Restaurant rest) async {
     //Animate screen container from bottom to top
     await _animateContainerFromBottomToTop();
 
     await Navigation.push(
       context,
       customPageTransition: PageTransition(
-        child: const VendorScreen(),
+        child: VendorScreen(
+          restaunrant: rest,
+        ),
         type: PageTransitionType.fadeIn,
       ),
     );
@@ -115,6 +118,14 @@ class _StartPageState extends State<StartPage> {
 
   @override
   Widget build(BuildContext context) {
+    void handleNavigate(BuildContext context, Restaurant rest) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => VendorScreen(
+          restaunrant: rest,
+        ),
+      ));
+    }
+
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
     final user = FirebaseAuth.instance.currentUser!;
 
@@ -235,7 +246,9 @@ class _StartPageState extends State<StartPage> {
                                       var rest = restaurantsSnap.data![index];
                                       print("Hola 🐻‍❄️$rest");
                                       return GestureDetector(
-                                          onTap: _navigate,
+                                          onTap: () {
+                                            handleNavigate(context, rest);
+                                          },
                                           child: VendorCard(
                                             imagePath: rest.imagen!,
                                             name: rest.nombre!,
@@ -247,8 +260,19 @@ class _StartPageState extends State<StartPage> {
                                   return Center(
                                     child: Text(snapshot.error.toString()),
                                   );
+                                } else if (restaurantsSnap.hasData == false) {
+                                  print("no hay datos");
+                                  return const SizedBox(
+                                    height: 300,
+                                    child: Center(
+                                        child: Text(
+                                      "No hay restaurantes :,v",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 40),
+                                    )),
+                                  );
                                 } else {
-                                  return Center(
+                                  return const Center(
                                     child: CircularProgressIndicator(),
                                   );
                                 }

@@ -94,13 +94,13 @@ class _TravelOsoState extends State<TravelOso> {
 
   @override
   void initState() {
-    futureRestaurant = RemoteService().getRestaurantsCerca(
+    futureRestaurant = RemoteService().getRestaurantsCercaPOST(
       //lat: currentLocation!.latitude!,
-      lat: -9999999.9,
+      lat: -16.3766733,
       //long: currentLocation!.longitude!,
-      long: -9999999.9,
+      long: -71.5089717,
       //etiquetas: globalUser.preferencias!,
-      etiquetas: ["Nada"],
+      etiquetas: ["Comida Peruana"],
     );
     getCurrentLocation();
     super.initState();
@@ -145,13 +145,13 @@ class _TravelOsoState extends State<TravelOso> {
                 ),
                 onPressed: () async {
                   getCurrentLocation();
-                  futureRestaurant = RemoteService().getRestaurantsCerca(
-                    //lat: currentLocation!.latitude!,
-                    lat: -16.36657,
-                    //long: currentLocation!.longitude!,
-                    long: -71.5122104,
-                    //etiquetas: globalUser.preferencias!,
-                    etiquetas: ["Comida Peruana"],
+                  futureRestaurant = RemoteService().getRestaurantsCercaPOST(
+                    lat: currentLocation!.latitude!,
+                    //lat: -16.36657,
+                    long: currentLocation!.longitude!,
+                    //long: -71.5122104,
+                    etiquetas: globalUser.preferencias!,
+                    //etiquetas: ["Comida Peruana"],
                   );
                 },
                 child: currentLocation == null
@@ -204,7 +204,13 @@ class _TravelOsoState extends State<TravelOso> {
                             child: Text(restaurantsSnap.error.toString()),
                           );
                         } else if (restaurantsSnap.hasData == false) {
-                          return Text("Presiona el boton :v");
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              "Presiona el boton para empezar la busqueda, las recomendaciones apareceran debajo",
+                              textAlign: TextAlign.center,
+                            ),
+                          );
                         } else {
                           return Center(
                             child: CircularProgressIndicator(),

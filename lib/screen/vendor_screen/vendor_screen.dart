@@ -1,3 +1,4 @@
+import 'package:comeloso_app/models/restaurant.dart';
 import 'package:flutter/material.dart';
 import 'package:comeloso_app/animations/animations.dart';
 import 'package:comeloso_app/utils/ui_helper.dart';
@@ -10,7 +11,8 @@ import 'package:comeloso_app/screen/vendor_screen/widgets/product_item_card.dart
 import 'package:comeloso_app/screen/vendor_screen/widgets/vendor_info_card.dart';
 
 class VendorScreen extends StatefulWidget {
-  const VendorScreen({Key? key}) : super(key: key);
+  const VendorScreen({Key? key, required this.restaunrant}) : super(key: key);
+  final Restaurant restaunrant;
 
   @override
   _VendorScreenState createState() => _VendorScreenState();
@@ -101,8 +103,8 @@ class _VendorScreenState extends State<VendorScreen> {
                       height: rf(330),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30),
-                        child: Image.asset(
-                          'lib/assets/images/temp_vendor_bg.png',
+                        child: Image.network(
+                          widget.restaunrant.imagen!,
                           width: 100 * SizeConfig.heightMultiplier,
                           fit: BoxFit.cover,
                         ),
@@ -114,17 +116,16 @@ class _VendorScreenState extends State<VendorScreen> {
                         showOptions: false,
                       ),
                     ),
-                    const Positioned(
+                    Positioned(
                       bottom: 0,
                       left: 0,
                       right: 0,
                       child: ClippedContainer(
                         backgroundColor: Colors.white,
                         child: VendorInfoCard(
-                          title: 'New York Donut',
+                          title: widget.restaunrant.nombre!,
                           rating: 4.2,
-                          sideImagePath:
-                              'lib/assets/images/temp_vendor_logo.png',
+                          sideImagePath: widget.restaunrant.imagen!,
                         ),
                       ),
                     ),

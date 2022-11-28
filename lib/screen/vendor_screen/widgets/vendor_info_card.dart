@@ -105,7 +105,7 @@ class VendorInfoCard extends StatelessWidget {
           ),
           ClipRRect(
             borderRadius: BorderRadius.circular(rf(15)),
-            child: Image.asset(
+            child: Image.network(
               sideImagePath,
               width: rw(70),
             ),

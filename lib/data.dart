@@ -41,46 +41,46 @@ List<Map<String, dynamic>> vendorList = const [
 //Vendor Screen
 List<Map<String, dynamic>> productList = const [
   {
-    "title": "Honey Milk Donut",
-    "detail": "Honey + sugar + flawour + some ingrident ...",
-    "imagePath": "lib/assets/images/donut/donut_7.png",
+    "title": "Ceviche",
+    "detail": "Pescado,Limos,leche de tigue,rocoto",
+    "imagePath":
+        "https://t2.rg.ltmcdn.com/es/posts/7/4/1/ceviche_peruano_18147_600.webp",
   },
   {
-    "title": "Raspberry Donut",
-    "detail": "Raspberry + sugar + flawour ",
-    "imagePath": "lib/assets/images/donut/donut_2.png",
+    "title": "Chupe de camaron",
+    "detail": "Camaron,Choclo,abas,papa",
+    "imagePath":
+        "https://comidasperuanas.net/wp-content/uploads/2016/03/Chupe-de-camarones.webp",
   },
   {
-    "title": "Chocolate Donut",
-    "detail": "Chocolate + sugar + flawour + some ingrident ...",
-    "imagePath": "lib/assets/images/donut/donut_3.png",
+    "title": "Arroz de mariscos",
+    "detail": "mariscos,arroz,yuyo",
+    "imagePath":
+        "https://comidasperuanas.net/wp-content/uploads/2015/11/Arroz-con-mariscos.webp",
   },
   {
-    "title": "Blueberry Donut",
-    "detail": "Blueberry + sugar + flawour + some ingrident ...",
-    "imagePath": "lib/assets/images/donut/donut_4.png",
+    "title": "Pescado Frito",
+    "detail": "Pescado,lechuga,papas fritas",
+    "imagePath":
+        "https://comidasperuanas.net.pe/wp-content/uploads/2022/09/preparar-pescado-frito.jpg",
   },
   {
-    "title": "Sugary Heaven",
-    "detail": " Sugar + flawour + some ingrident ...",
-    "imagePath": "lib/assets/images/donut/donut_5.png",
-  },
-  {
-    "title": "Juicy Donut",
-    "detail": "Juicy + sugar + flawour + some ingrident ...",
-    "imagePath": "lib/assets/images/donut/donut_6.png",
+    "title": "Ceviche de mariscos",
+    "detail": "mariscos,limon,rocoto,leche de tigre",
+    "imagePath":
+        "https://micevichedehoy.com/wp-content/uploads/2018/10/ceviche-de-marisco_700x465.jpg",
   },
 ];
 
 List<String> categoryIconList = [
-  "lib/assets/images/cloche.png",
-  "lib/assets/images/burger.png",
-  "lib/assets/images/pizza-slice.png",
-  "lib/assets/images/donut.png",
-  "lib/assets/images/cloche.png",
-  "lib/assets/images/burger.png",
-  "lib/assets/images/pizza-slice.png",
-  "lib/assets/images/donut.png",
+  "https://peru.info/archivos/publicacion/24-imagen-1316321112018.jpg",
+  "https://peru.info/archivos/publicacion/24-imagen-1316321112018.jpg",
+  "https://peru.info/archivos/publicacion/24-imagen-1316321112018.jpg",
+  "https://peru.info/archivos/publicacion/24-imagen-1316321112018.jpg",
+  "https://peru.info/archivos/publicacion/24-imagen-1316321112018.jpg",
+  "https://peru.info/archivos/publicacion/24-imagen-1316321112018.jpg",
+  "https://peru.info/archivos/publicacion/24-imagen-1316321112018.jpg",
+  "https://peru.info/archivos/publicacion/24-imagen-1316321112018.jpg",
 ];
 
 List<String> name = [

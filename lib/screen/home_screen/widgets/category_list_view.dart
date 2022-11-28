@@ -21,6 +21,21 @@ class _CategoryListViewState extends State<CategoryListView> {
 
   @override
   Widget build(BuildContext context) {
+    void handleNavigateMap(BuildContext context) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => TravelTrackingPage()));
+    }
+
+    void handleNavigatProfile(BuildContext context) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => ProfileUser()));
+    }
+
+    void handleNavigateOso(BuildContext context) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => TravelOso()));
+    }
+
     return SizedBox(
       height: rh(120),
       child: ListView(
@@ -29,14 +44,8 @@ class _CategoryListViewState extends State<CategoryListView> {
         scrollDirection: Axis.horizontal,
         children: [
           GestureDetector(
-            onTap: () async {
-              await Navigation.push(
-                context,
-                customPageTransition: PageTransition(
-                  child: const TravelTrackingPage(),
-                  type: PageTransitionType.fadeIn,
-                ),
-              );
+            onTap: () {
+              handleNavigateMap(context);
             },
             child: CategoryItem(
                 name: "Mapa",
@@ -44,14 +53,8 @@ class _CategoryListViewState extends State<CategoryListView> {
                 icon: const FaIcon(FontAwesomeIcons.map)),
           ),
           GestureDetector(
-            onTap: () async {
-              await Navigation.push(
-                context,
-                customPageTransition: PageTransition(
-                  child: const TravelOso(),
-                  type: PageTransitionType.fadeIn,
-                ),
-              );
+            onTap: () {
+              handleNavigateOso(context);
             },
             child: CategoryItem(
                 name: "Vamo a caminar",
@@ -59,14 +62,8 @@ class _CategoryListViewState extends State<CategoryListView> {
                 icon: const FaIcon(FontAwesomeIcons.compass)),
           ),
           GestureDetector(
-            onTap: () async {
-              await Navigation.push(
-                context,
-                customPageTransition: PageTransition(
-                  child: const ProfileUser(),
-                  type: PageTransitionType.fadeIn,
-                ),
-              );
+            onTap: () {
+              handleNavigatProfile(context);
             },
             child: CategoryItem(
                 name: "PerfilOso",

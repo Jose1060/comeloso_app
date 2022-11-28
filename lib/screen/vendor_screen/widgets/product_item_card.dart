@@ -14,6 +14,7 @@ class ProductItem extends StatelessWidget {
   final String imagePath;
   final String title;
   final String detail;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -78,14 +79,6 @@ class ProductItem extends StatelessWidget {
                     .copyWith(fontSize: rf(12)),
               ),
               SizedBox(height: rh(space2x)),
-              Buttons.text(
-                context: context,
-                hPadding: 0,
-                vPadding: 0,
-                textColor: Theme.of(context).primaryColorDark,
-                text: "Add to cart",
-                onPressed: () {},
-              ),
             ],
           )
         ],

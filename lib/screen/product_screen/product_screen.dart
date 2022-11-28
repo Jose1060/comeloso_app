@@ -93,8 +93,8 @@ class _ProductScreenState extends State<ProductScreen> {
                         curve: Curves.easeOutBack,
                         child: Align(
                           alignment: Alignment.centerLeft,
-                          child: Image.asset(
-                            'lib/assets/images/donut/donut_4.png',
+                          child: Image.network(
+                            'https://comidasperuanas.net/wp-content/uploads/2015/11/Arroz-con-mariscos.webp',
                             width: rw(380),
                           ),
                         ),

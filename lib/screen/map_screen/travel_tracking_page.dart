@@ -98,19 +98,20 @@ class _TravelTrackingPageState extends State<TravelTrackingPage> {
     Location location = Location();
     final loc = await location.getLocation();
     currentLocation = loc;
+    setState(() {});
 
-    GoogleMapController googleMapController = await _controller.future;
-    location.onLocationChanged.listen((newLoc) {
-      currentLocation = newLoc;
-      googleMapController.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            zoom: 19.5,
-            target: LatLng(newLoc.latitude!, newLoc.longitude!),
-          ),
-        ),
-      );
-    });
+    // GoogleMapController googleMapController = await _controller.future;
+    // location.onLocationChanged.listen((newLoc) {
+    //   currentLocation = newLoc;
+    //   googleMapController.animateCamera(
+    //     CameraUpdate.newCameraPosition(
+    //       CameraPosition(
+    //         zoom: 19.5,
+    //         target: LatLng(newLoc.latitude!, newLoc.longitude!),
+    //       ),
+    //     ),
+    //   );
+    // });
     setState(() {});
   }
 
@@ -189,7 +190,8 @@ class _TravelTrackingPageState extends State<TravelTrackingPage> {
                       child: VendorInfoCard(
                         title: 'New York Donut',
                         rating: 4.2,
-                        sideImagePath: 'lib/assets/images/temp_vendor_logo.png',
+                        sideImagePath:
+                            'https://micevichedehoy.com/wp-content/uploads/2018/10/ceviche-de-marisco_700x465.jpg',
                       ),
                     ),
                   ),

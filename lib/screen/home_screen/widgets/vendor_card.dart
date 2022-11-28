@@ -60,7 +60,7 @@ class VendorCard extends StatelessWidget {
                         .copyWith(fontSize: rf(14)),
                   ),
                   Text(
-                    '  * Fast food * \$2.5',
+                    '  * Camida Peruana *  ',
                     style: Theme.of(context).textTheme.headline6!.copyWith(
                           color: Colors.grey.shade400,
                           fontSize: rf(12),
@@ -110,7 +110,6 @@ class VendorCard extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          const FavIcon(),
         ],
       ),
     );
