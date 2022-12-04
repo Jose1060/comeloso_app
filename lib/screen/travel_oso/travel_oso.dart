@@ -4,6 +4,7 @@ import 'package:comeloso_app/models/restaurant.dart';
 import 'package:comeloso_app/models/user.dart';
 import 'package:comeloso_app/provider/google_sign_in.dart';
 import 'package:comeloso_app/screen/map_screen/travel_tracking_page.dart';
+import 'package:comeloso_app/screen/travel_oso/travel_oso_tracking_page.dart';
 import 'package:comeloso_app/screen/vendor_screen/widgets/product_item_card.dart';
 import 'package:comeloso_app/services/remote_services.dart';
 import 'package:comeloso_app/utils/navigation.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:rive/rive.dart';
 
 class TravelOso extends StatefulWidget {
   const TravelOso({super.key});
@@ -26,20 +28,25 @@ class TravelOso extends StatefulWidget {
 
 class _TravelOsoState extends State<TravelOso> {
   late double _height;
-  late Future<List<Restaurant>?> futureRestaurant;
+  Future<List<Restaurant>?>? futureRestaurant;
   final _duration = const Duration(milliseconds: 750);
   final _psudoDuration = const Duration(milliseconds: 150);
+  late RiveAnimationController _controller;
   LocationData? currentLocation;
 
-  _navigate() async {
+  _navigate({required double latitud, required double longitud}) async {
     await _animateContainerFromBottomToTop();
 
     //push to products screen
     //wait till product is pooped
+    // ignore: use_build_context_synchronously
     await Navigation.push(
       context,
       customPageTransition: PageTransition(
-        child: TravelTrackingPage(),
+        child: TravelOsoTrackingPage(
+          destLat: latitud,
+          destLong: longitud,
+        ),
         type: PageTransitionType.fadeIn,
       ),
     );
@@ -72,12 +79,21 @@ class _TravelOsoState extends State<TravelOso> {
   }
 
   void getCurrentLocation() async {
+    _isLoading = true;
     Location location = Location();
     final loc = await location.getLocation();
     currentLocation = loc;
-
+    _isLoading = false;
     setState(() {});
   }
+
+  void _togglePlay() =>
+      setState(() => _controller.isActive = !_controller.isActive);
+
+  /// Tracks if the animation is playing by whether controller is running
+  bool get isPlaying => _controller.isActive;
+
+  bool _isLoading = false;
 
   @override
   void didChangeDependencies() {
@@ -94,20 +110,26 @@ class _TravelOsoState extends State<TravelOso> {
 
   @override
   void initState() {
-    futureRestaurant = RemoteService().getRestaurantsCercaPOST(
-      //lat: currentLocation!.latitude!,
-      lat: -16.3766733,
-      //long: currentLocation!.longitude!,
-      long: -71.5089717,
-      //etiquetas: globalUser.preferencias!,
-      etiquetas: ["Comida Peruana"],
-    );
+    final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
+    UserOso globalUser = provider.userOso!;
+    _controller = SimpleAnimation('active', autoplay: false);
     getCurrentLocation();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    void handleNavigatMap(
+        {required BuildContext context,
+        required double latitud,
+        required double longitud}) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (_) => TravelOsoTrackingPage(
+                destLat: latitud,
+                destLong: longitud,
+              )));
+    }
+
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
     UserOso globalUser = provider.userOso!;
     return Scaffold(
@@ -135,33 +157,43 @@ class _TravelOsoState extends State<TravelOso> {
                 ],
               ),
               MaterialButton(
-                elevation: 20,
-                height: rh(200),
-                minWidth: rh(200),
-                color: Colors.green,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100.0),
-                  side: BorderSide(color: Theme.of(context).primaryColor),
-                ),
-                onPressed: () async {
-                  getCurrentLocation();
-                  futureRestaurant = RemoteService().getRestaurantsCercaPOST(
-                    lat: currentLocation!.latitude!,
-                    //lat: -16.36657,
-                    long: currentLocation!.longitude!,
-                    //long: -71.5122104,
-                    etiquetas: globalUser.preferencias!,
-                    //etiquetas: ["Comida Peruana"],
-                  );
-                },
-                child: currentLocation == null
-                    ? CircularProgressIndicator()
-                    : FaIcon(
-                        FontAwesomeIcons.compass,
-                        color: Colors.white,
-                        size: rh(120),
-                      ),
-              ),
+                  elevation: 20,
+                  height: rh(200),
+                  minWidth: rh(200),
+                  color: Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100.0),
+                    side: BorderSide(color: Theme.of(context).primaryColor),
+                  ),
+                  onPressed: _isLoading
+                      ? null
+                      : () async {
+                          _togglePlay;
+                          getCurrentLocation();
+                          futureRestaurant =
+                              RemoteService().getRestaurantsCercaPOST(
+                            lat: currentLocation!.latitude!,
+                            // * lat: -16.36657,
+                            long: currentLocation!.longitude!,
+                            // * long: -71.5122104,
+                            etiquetas: globalUser.preferencias!,
+                            // * etiquetas: ["Comida Peruana"],
+                          );
+                        },
+                  child: currentLocation == null
+                      ? CircularProgressIndicator()
+                      : SizedBox(
+                          height: 155,
+                          width: 155,
+                          child: RiveAnimation.asset(
+                            artboard: "compass",
+                            'lib/assets/rive/travel_icon.riv',
+                            // Update the play state when the widget's initialized
+                            onInit: (_) => setState(() {}),
+                            controllers: [_controller],
+                            fit: BoxFit.cover,
+                          ),
+                        )),
               SizedBox(height: rh(space5x)),
               FadeAnimation(
                 intervalStart: 0.4,
@@ -174,6 +206,7 @@ class _TravelOsoState extends State<TravelOso> {
                       future: futureRestaurant,
                       builder: (BuildContext context, restaurantsSnap) {
                         if (restaurantsSnap.hasData) {
+                          print("hay datos");
                           return ListView.separated(
                             itemCount: restaurantsSnap.data!.length,
                             padding: EdgeInsets.zero,
@@ -190,11 +223,16 @@ class _TravelOsoState extends State<TravelOso> {
                               var rest = restaurantsSnap.data![index];
 
                               return GestureDetector(
-                                onTap: _navigate,
+                                onTap: () {
+                                  handleNavigatMap(
+                                      context: context,
+                                      latitud: rest.latitud!,
+                                      longitud: rest.longitud!);
+                                },
                                 child: ProductItem(
                                   imagePath: rest.imagen!,
                                   title: rest.nombre!,
-                                  detail: rest.descripcion!,
+                                  detail: rest.descripcion ?? "Nada",
                                 ),
                               );
                             },

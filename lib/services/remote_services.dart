@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:ffi';
 
@@ -50,23 +52,28 @@ class RemoteService {
       {required double lat,
       required double long,
       required List etiquetas}) async {
-    final body = {
-      "latitud": lat.toString(),
-      "longitud": long.toString(),
-      "etiquetas": etiquetas
-    };
+    final body = {"latitud": lat, "longitud": long, "etiquetas": etiquetas};
 
     print(body);
     final jsonString = json.encode(body);
+    final encoding = Encoding.getByName('utf-8');
 
     var client = http.Client();
-    var uriCerca = Uri.https("$GlobalURL", "/restaurantescerca");
+    var uriCerca = Uri.https(GlobalURL, "/restaurantescerca");
     print("🧔 ----> $uriCerca");
-    var response = await client.post(uriCerca, body: jsonString);
+
+    var response = await client.post(uriCerca,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonString,
+        encoding: encoding);
+
     print("🐼 ----> ${response.statusCode}");
+
     if (response.statusCode == 200) {
       var json = response.body;
-      print("🐵  ----> " + restaurantFromJson(json).toString());
+      print("🐵  ----> ${restaurantFromJson(json)}");
       return restaurantFromJson(json);
     } else if (response.statusCode == 400 || response.statusCode == 400) {
       print("Error");
