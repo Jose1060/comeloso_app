@@ -33,6 +33,7 @@ class _TravelTrackingPageState extends State<TravelTrackingPage> {
   static const LatLng destination =
       LatLng(-16.385942810228553, -71.51120962101196);
   LocationData? currentLocation;
+  late RiveAnimationController _controllerRive;
 
   late double _height;
 
@@ -100,6 +101,12 @@ class _TravelTrackingPageState extends State<TravelTrackingPage> {
     setState(() {});
   }
 
+  void _togglePlay() =>
+      setState(() => _controllerRive.isActive = !_controllerRive.isActive);
+
+  /// Tracks if the animation is playing by whether controller is running
+  bool get isPlaying => _controllerRive.isActive;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -112,6 +119,7 @@ class _TravelTrackingPageState extends State<TravelTrackingPage> {
 
   @override
   void initState() {
+    _controllerRive = SimpleAnimation('Move', autoplay: true);
     getCurrentLocation();
     getPolylinesPoints();
     super.initState();
@@ -130,9 +138,16 @@ class _TravelTrackingPageState extends State<TravelTrackingPage> {
           color: Theme.of(context).scaffoldBackgroundColor,
         ),
         child: currentLocation == null
-            ? const Center(
-                child: RiveAnimation.asset(
-                  'lib/assets/rive/delivery.riv',
+            ? Center(
+                child: SizedBox(
+                  height: 200,
+                  width: 150,
+                  child: RiveAnimation.asset(
+                    'lib/assets/rive/delivery.riv',
+                    onInit: (_) => setState(() {}),
+                    controllers: [_controllerRive],
+                    fit: BoxFit.cover,
+                  ),
                 ),
               )
             : Stack(

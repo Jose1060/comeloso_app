@@ -93,7 +93,7 @@ class _TravelOsoState extends State<TravelOso> {
   void initState() {
     final provider = Provider.of<GoogleSignInProvider>(context, listen: false);
     UserOso globalUser = provider.userOso!;
-    _controller = SimpleAnimation('active', autoplay: false);
+    _controller = SimpleAnimation('active', autoplay: true);
     getCurrentLocation();
     super.initState();
   }
@@ -139,14 +139,26 @@ class _TravelOsoState extends State<TravelOso> {
                   ),
                 ],
               ),
+              const FadeAnimation(
+                duration: Duration(milliseconds: 4550),
+                child: Center(
+                  child: Text(
+                    "ComelOso",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 40),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 40,
+              ),
               MaterialButton(
                   elevation: 20,
                   height: rh(200),
                   minWidth: rh(200),
-                  color: Colors.green,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(100.0),
-                    side: BorderSide(color: Theme.of(context).primaryColor),
+                    side: BorderSide(color: Colors.blue.shade200),
                   ),
                   onPressed: _isLoading
                       ? null
@@ -189,37 +201,61 @@ class _TravelOsoState extends State<TravelOso> {
                       future: futureRestaurant,
                       builder: (BuildContext context, restaurantsSnap) {
                         if (restaurantsSnap.hasData) {
-                          return ListView.separated(
-                            itemCount: restaurantsSnap.data!.length,
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              return Divider(
-                                height: rh(space4x),
-                                endIndent: rw(20),
-                                indent: rw(20),
-                              );
-                            },
-                            itemBuilder: (BuildContext context, int index) {
-                              var rest = restaurantsSnap.data![index];
+                          return FadeAnimation(
+                            intervalStart: 0.4,
+                            duration: const Duration(milliseconds: 1250),
+                            child: SlideAnimation(
+                              begin: const Offset(0, 100),
+                              intervalStart: 0.4,
+                              duration: const Duration(milliseconds: 1250),
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    "Tus restaurantes:",
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black87),
+                                  ),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  ListView.separated(
+                                    itemCount: restaurantsSnap.data!.length,
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    separatorBuilder:
+                                        (BuildContext context, int index) {
+                                      return Divider(
+                                        height: rh(space4x),
+                                        endIndent: rw(20),
+                                        indent: rw(20),
+                                      );
+                                    },
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      var rest = restaurantsSnap.data![index];
 
-                              return GestureDetector(
-                                onTap: () {
-                                  handleNavigatMap(
-                                      context: context,
-                                      latitud: rest.latitud!,
-                                      longitud: rest.longitud!,
-                                      restaurante: rest);
-                                },
-                                child: RestaurantOsoItem(
-                                  imagePath: rest.imagen!,
-                                  title: rest.nombre!,
-                                  detail: rest.descripcion ?? "Nada",
-                                  address: rest.direccion!,
-                                ),
-                              );
-                            },
+                                      return GestureDetector(
+                                        onTap: () {
+                                          handleNavigatMap(
+                                              context: context,
+                                              latitud: rest.latitud!,
+                                              longitud: rest.longitud!,
+                                              restaurante: rest);
+                                        },
+                                        child: RestaurantOsoItem(
+                                          imagePath: rest.imagen!,
+                                          title: rest.nombre!,
+                                          detail: rest.descripcion ?? "Nada",
+                                          address: rest.direccion!,
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
                           );
                         } else if (restaurantsSnap.hasError) {
                           return Center(

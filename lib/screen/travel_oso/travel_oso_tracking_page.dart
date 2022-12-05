@@ -38,6 +38,7 @@ class _TravelOsoTrackingPageState extends State<TravelOsoTrackingPage> {
   final Completer<GoogleMapController> _controller = Completer();
   late LatLng sourceLocation;
   late LatLng destination;
+  late RiveAnimationController _controllerRive;
 
   LocationData? currentLocation;
 
@@ -113,6 +114,12 @@ class _TravelOsoTrackingPageState extends State<TravelOsoTrackingPage> {
     setState(() {});
   }
 
+  void _togglePlay() =>
+      setState(() => _controllerRive.isActive = !_controllerRive.isActive);
+
+  /// Tracks if the animation is playing by whether controller is running
+  bool get isPlaying => _controllerRive.isActive;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -125,6 +132,7 @@ class _TravelOsoTrackingPageState extends State<TravelOsoTrackingPage> {
 
   @override
   void initState() {
+    _controllerRive = SimpleAnimation('Move', autoplay: true);
     sourceLocation = LatLng(-16.376027177050197, -71.50814298847764);
     destination = LatLng(widget.destLat, widget.destLong);
     getCurrentLocation();
@@ -159,9 +167,16 @@ class _TravelOsoTrackingPageState extends State<TravelOsoTrackingPage> {
           color: Theme.of(context).scaffoldBackgroundColor,
         ),
         child: currentLocation == null
-            ? const Center(
-                child: RiveAnimation.asset(
-                  'lib/assets/rive/delivery.riv',
+            ? Center(
+                child: SizedBox(
+                  height: 200,
+                  width: 150,
+                  child: RiveAnimation.asset(
+                    'lib/assets/rive/delivery.riv',
+                    onInit: (_) => setState(() {}),
+                    controllers: [_controllerRive],
+                    fit: BoxFit.cover,
+                  ),
                 ),
               )
             : Stack(
