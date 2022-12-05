@@ -18,7 +18,6 @@ class Restaurant {
     this.telefono,
     this.email,
     this.imagen,
-    this.descripcion,
     this.latitud,
     this.longitud,
     this.etiquetas,
@@ -28,6 +27,8 @@ class Restaurant {
     this.comentarios,
     this.calificaciones,
     this.v,
+    this.carta,
+    this.descripcion,
   });
 
   String? id;
@@ -36,16 +37,17 @@ class Restaurant {
   String? telefono;
   String? email;
   String? imagen;
-  String? descripcion;
   double? latitud;
   double? longitud;
   List<String>? etiquetas;
   int? nCalificaciones;
-  int? promedio;
+  double? promedio;
   int? totalPuntos;
-  List<Comentario>? comentarios;
-  List<dynamic>? calificaciones;
+  List<Calificacione>? comentarios;
+  List<Calificacione>? calificaciones;
   int? v;
+  List<Carta>? carta;
+  String? descripcion;
 
   factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
         id: json["_id"],
@@ -54,18 +56,19 @@ class Restaurant {
         telefono: json["telefono"],
         email: json["email"],
         imagen: json["imagen"],
-        descripcion: json["descripcion"],
         latitud: json["latitud"].toDouble(),
         longitud: json["longitud"].toDouble(),
         etiquetas: List<String>.from(json["etiquetas"].map((x) => x)),
         nCalificaciones: json["N_calificaciones"],
-        promedio: json["promedio"],
+        promedio: json["promedio"].toDouble(),
         totalPuntos: json["total_puntos"],
-        comentarios: List<Comentario>.from(
-            json["comentarios"].map((x) => Comentario.fromJson(x))),
-        calificaciones:
-            List<dynamic>.from(json["calificaciones"].map((x) => x)),
+        comentarios: List<Calificacione>.from(
+            json["comentarios"].map((x) => Calificacione.fromJson(x))),
+        calificaciones: List<Calificacione>.from(
+            json["calificaciones"].map((x) => Calificacione.fromJson(x))),
         v: json["__v"],
+        carta: List<Carta>.from(json["carta"].map((x) => Carta.fromJson(x))),
+        descripcion: json["descripcion"] == null ? null : json["descripcion"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -75,7 +78,6 @@ class Restaurant {
         "telefono": telefono,
         "email": email,
         "imagen": imagen,
-        "descripcion": descripcion,
         "latitud": latitud,
         "longitud": longitud,
         "etiquetas": List<dynamic>.from(etiquetas!.map((x) => x)),
@@ -83,35 +85,80 @@ class Restaurant {
         "promedio": promedio,
         "total_puntos": totalPuntos,
         "comentarios": List<dynamic>.from(comentarios!.map((x) => x.toJson())),
-        "calificaciones": List<dynamic>.from(calificaciones!.map((x) => x)),
+        "calificaciones":
+            List<dynamic>.from(calificaciones!.map((x) => x.toJson())),
         "__v": v,
+        "carta": List<dynamic>.from(carta!.map((x) => x.toJson())),
+        "descripcion": descripcion == null ? null : descripcion,
       };
 }
 
-class Comentario {
-  Comentario({
+class Calificacione {
+  Calificacione({
     this.idUsuario,
-    this.contenido,
+    this.calificacion,
     this.idRestaurante,
     this.id,
+    this.contenido,
   });
 
   String? idUsuario;
-  String? contenido;
+  double? calificacion;
   String? idRestaurante;
   String? id;
+  String? contenido;
 
-  factory Comentario.fromJson(Map<String, dynamic> json) => Comentario(
+  factory Calificacione.fromJson(Map<String, dynamic> json) => Calificacione(
         idUsuario: json["idUsuario"],
-        contenido: json["contenido"],
+        calificacion: json["calificacion"] == null
+            ? null
+            : json["calificacion"].toDouble(),
         idRestaurante: json["idRestaurante"],
         id: json["_id"],
+        contenido: json["contenido"] == null ? null : json["contenido"],
       );
 
   Map<String, dynamic> toJson() => {
         "idUsuario": idUsuario,
-        "contenido": contenido,
+        "calificacion": calificacion == null ? null : calificacion,
         "idRestaurante": idRestaurante,
+        "_id": id,
+        "contenido": contenido == null ? null : contenido,
+      };
+}
+
+class Carta {
+  Carta({
+    this.nombre,
+    this.detalle,
+    this.imagen,
+    this.precio,
+    this.ranking,
+    this.id,
+  });
+
+  String? nombre;
+  String? detalle;
+  String? imagen;
+  double? precio;
+  int? ranking;
+  String? id;
+
+  factory Carta.fromJson(Map<String, dynamic> json) => Carta(
+        nombre: json["nombre"],
+        detalle: json["detalle"],
+        imagen: json["imagen"],
+        precio: json["precio"].toDouble(),
+        ranking: json["ranking"],
+        id: json["_id"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "nombre": nombre,
+        "detalle": detalle,
+        "imagen": imagen,
+        "precio": precio,
+        "ranking": ranking,
         "_id": id,
       };
 }

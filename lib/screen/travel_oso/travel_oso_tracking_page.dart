@@ -40,22 +40,6 @@ class _TravelOsoTrackingPageState extends State<TravelOsoTrackingPage> {
   final _duration = const Duration(milliseconds: 750);
   final _psudoDuration = const Duration(milliseconds: 150);
 
-  _navigate() async {
-    await _animateContainerFromBottomToTop();
-
-    //push to products screen
-    //wait till product is pooped
-    await Navigation.push(
-      context,
-      customPageTransition: PageTransition(
-        child: ProductScreen(),
-        type: PageTransitionType.fadeIn,
-      ),
-    );
-
-    await _animateContainerFromTopToBottom();
-  }
-
   _navigateBack() async {
     await _animateContainerFromBottomToTop();
 

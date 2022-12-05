@@ -1,3 +1,4 @@
+import 'package:comeloso_app/models/restaurant.dart';
 import 'package:flutter/material.dart';
 import 'package:comeloso_app/animations/fade_animation.dart';
 import 'package:comeloso_app/animations/scale_animation.dart';
@@ -10,7 +11,8 @@ import 'package:comeloso_app/widgets/button/buttons.dart';
 import 'package:comeloso_app/screen/product_screen/widgets/product_info_text.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({Key? key}) : super(key: key);
+  const ProductScreen({Key? key, required this.itemCard}) : super(key: key);
+  final Carta itemCard;
 
   @override
   _ProductScreenState createState() => _ProductScreenState();
@@ -94,7 +96,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Image.network(
-                            'https://comidasperuanas.net/wp-content/uploads/2015/11/Arroz-con-mariscos.webp',
+                            widget.itemCard.imagen!,
                             width: rw(380),
                           ),
                         ),
@@ -151,12 +153,12 @@ class _ProductScreenState extends State<ProductScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'Raspberry Donut',
+                          widget.itemCard.nombre!,
                           style: Theme.of(context).textTheme.headline4,
                         ),
                         SizedBox(height: rh(space1x)),
                         Text(
-                          '\$12.95',
+                          widget.itemCard.precio.toString(),
                           style:
                               Theme.of(context).textTheme.headline4!.copyWith(
                                     color: Theme.of(context).primaryColorDark,
@@ -166,7 +168,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         ),
                         SizedBox(height: rh(space2x)),
                         Text(
-                          'lorem ipsum doremetlorem ipsum doremetlorem ipsum doremetlorem ipsum doremetlorem ipsum doremetlorem ipsum doremetlorem ipsum doremetlorem ipsum doremetorem ipsum doremet',
+                          widget.itemCard.detalle!,
                           style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ],

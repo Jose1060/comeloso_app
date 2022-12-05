@@ -11,8 +11,8 @@ import 'package:comeloso_app/screen/vendor_screen/widgets/product_item_card.dart
 import 'package:comeloso_app/screen/vendor_screen/widgets/vendor_info_card.dart';
 
 class VendorScreen extends StatefulWidget {
-  const VendorScreen({Key? key, required this.restaunrant}) : super(key: key);
-  final Restaurant restaunrant;
+  const VendorScreen({Key? key, required this.restaurant}) : super(key: key);
+  final Restaurant restaurant;
 
   @override
   _VendorScreenState createState() => _VendorScreenState();
@@ -23,22 +23,6 @@ class _VendorScreenState extends State<VendorScreen> {
 
   final _duration = const Duration(milliseconds: 750);
   final _psudoDuration = const Duration(milliseconds: 150);
-
-  _navigate() async {
-    await _animateContainerFromBottomToTop();
-
-    //push to products screen
-    //wait till product is pooped
-    await Navigation.push(
-      context,
-      customPageTransition: PageTransition(
-        child: ProductScreen(),
-        type: PageTransitionType.fadeIn,
-      ),
-    );
-
-    await _animateContainerFromTopToBottom();
-  }
 
   _navigateBack() async {
     await _animateContainerFromBottomToTop();
@@ -79,6 +63,14 @@ class _VendorScreenState extends State<VendorScreen> {
 
   @override
   Widget build(BuildContext context) {
+    void handleNavigate(BuildContext context, Carta itemCard) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => ProductScreen(
+          itemCard: itemCard,
+        ),
+      ));
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: AnimatedContainer(
@@ -104,7 +96,7 @@ class _VendorScreenState extends State<VendorScreen> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(30),
                         child: Image.network(
-                          widget.restaunrant.imagen!,
+                          widget.restaurant.imagen!,
                           width: 100 * SizeConfig.heightMultiplier,
                           fit: BoxFit.cover,
                         ),
@@ -123,9 +115,9 @@ class _VendorScreenState extends State<VendorScreen> {
                       child: ClippedContainer(
                         backgroundColor: Colors.white,
                         child: VendorInfoCard(
-                          title: widget.restaunrant.nombre!,
-                          rating: 4.2,
-                          sideImagePath: widget.restaunrant.imagen!,
+                          title: widget.restaurant.nombre!,
+                          rating: widget.restaurant.promedio!,
+                          sideImagePath: widget.restaurant.imagen!,
                         ),
                       ),
                     ),
@@ -141,7 +133,7 @@ class _VendorScreenState extends State<VendorScreen> {
                   intervalStart: 0.4,
                   duration: const Duration(milliseconds: 1250),
                   child: ListView.separated(
-                    itemCount: productList.length,
+                    itemCount: widget.restaurant.carta!.length,
                     padding: EdgeInsets.zero,
                     shrinkWrap: true,
                     separatorBuilder: (BuildContext context, int index) {
@@ -152,12 +144,17 @@ class _VendorScreenState extends State<VendorScreen> {
                       );
                     },
                     itemBuilder: (BuildContext context, int index) {
+                      final itemCarta = widget.restaurant.carta!;
                       return GestureDetector(
-                        onTap: _navigate,
+                        onTap: (() {
+                          handleNavigate(context, itemCarta[index]);
+                        }),
                         child: ProductItem(
-                          imagePath: productList[index]['imagePath'],
-                          title: productList[index]['title'],
-                          detail: productList[index]['detail'],
+                          imagePath: itemCarta[index].imagen!,
+                          title: itemCarta[index].nombre!,
+                          detail: itemCarta[index].detalle!,
+                          precio: itemCarta[index].precio!,
+                          ranking: itemCarta[index].precio!,
                         ),
                       );
                     },

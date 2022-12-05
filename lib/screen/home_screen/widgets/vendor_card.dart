@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:comeloso_app/utils/ui_helper.dart';
 import 'package:comeloso_app/widgets/custom_widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class VendorCard extends StatelessWidget {
   const VendorCard(
       {Key? key,
       required this.imagePath,
       required this.name,
-      required this.rating})
+      required this.rating,
+      required this.etiqueta,
+      required this.address})
       : super(key: key);
 
   final String imagePath;
   final String name;
   final String rating;
-
+  final String etiqueta;
+  final String address;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -60,9 +64,9 @@ class VendorCard extends StatelessWidget {
                         .copyWith(fontSize: rf(14)),
                   ),
                   Text(
-                    '  * Camida Peruana *  ',
+                    " * $etiqueta * ",
                     style: Theme.of(context).textTheme.headline6!.copyWith(
-                          color: Colors.grey.shade400,
+                          color: const Color(0xff977f98),
                           fontSize: rf(12),
                         ),
                   ),
@@ -79,16 +83,18 @@ class VendorCard extends StatelessWidget {
                     ),
                     child: Row(
                       children: [
-                        CIcons.fromMaterial(
-                          icon: Icons.timer,
-                          semanticLabel: 'Time',
-                          size: rf(12),
-                          color: const Color(0xff977f98),
+                        FaIcon(
+                          FontAwesomeIcons.arrowRightToCity,
+                          color: Colors.purple.shade200,
+                          size: 15,
                         ),
-                        Text(' 15-20 min',
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(address,
                             style:
                                 Theme.of(context).textTheme.bodyText1!.copyWith(
-                                      fontSize: rf(12),
+                                      fontSize: rf(10),
                                       fontWeight: FontWeight.bold,
                                       color: const Color(0xff977f98),
                                     )),
@@ -98,13 +104,13 @@ class VendorCard extends StatelessWidget {
                   const SizedBox(
                     width: space1x,
                   ),
-                  Text(
-                    '2.4 km',
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          color: Colors.grey.shade400,
-                          fontSize: rf(12),
-                        ),
-                  ),
+                  // Text(
+                  //   '2.4 km',
+                  //   style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  //         color: Colors.grey.shade400,
+                  //         fontSize: rf(12),
+                  //       ),
+                  // ),
                 ],
               ),
             ],

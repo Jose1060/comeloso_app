@@ -3,21 +3,19 @@ import 'package:flutter/material.dart';
 import '../../../utils/ui_helper.dart';
 import '../../../widgets/button/buttons.dart';
 
-class ProductItem extends StatelessWidget {
-  const ProductItem(
-      {Key? key,
-      required this.title,
-      required this.detail,
-      required this.imagePath,
-      required this.precio,
-      required this.ranking})
-      : super(key: key);
+class RestaurantOsoItem extends StatelessWidget {
+  const RestaurantOsoItem({
+    Key? key,
+    required this.title,
+    required this.detail,
+    required this.imagePath,
+    required this.address,
+  }) : super(key: key);
 
   final String imagePath;
   final String title;
   final String detail;
-  final double precio;
-  final double ranking;
+  final String address;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +74,7 @@ class ProductItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "S./ ${precio.toString()}",
+                address.toString(),
                 style: Theme.of(context)
                     .textTheme
                     .headline5!

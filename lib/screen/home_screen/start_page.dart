@@ -42,7 +42,7 @@ class _StartPageState extends State<StartPage> {
       context,
       customPageTransition: PageTransition(
         child: VendorScreen(
-          restaunrant: rest,
+          restaurant: rest,
         ),
         type: PageTransitionType.fadeIn,
       ),
@@ -121,7 +121,7 @@ class _StartPageState extends State<StartPage> {
     void handleNavigate(BuildContext context, Restaurant rest) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => VendorScreen(
-          restaunrant: rest,
+          restaurant: rest,
         ),
       ));
     }
@@ -253,6 +253,8 @@ class _StartPageState extends State<StartPage> {
                                             imagePath: rest.imagen!,
                                             name: rest.nombre!,
                                             rating: rest.promedio!.toString(),
+                                            etiqueta: rest.etiquetas![0],
+                                            address: rest.direccion!,
                                           ));
                                     },
                                   );

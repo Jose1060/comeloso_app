@@ -117,7 +117,7 @@ class CustomAppBar extends StatelessWidget {
                         children: [
                           SizedBox(width: rw(space3x)),
                           CIcons.fromMaterial(
-                            icon: FontAwesomeIcons.doorOpen,
+                            icon: FontAwesomeIcons.arrowRightFromBracket,
                             semanticLabel: 'Leave',
                           ),
                         ],

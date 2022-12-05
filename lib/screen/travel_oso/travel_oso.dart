@@ -4,6 +4,7 @@ import 'package:comeloso_app/models/restaurant.dart';
 import 'package:comeloso_app/models/user.dart';
 import 'package:comeloso_app/provider/google_sign_in.dart';
 import 'package:comeloso_app/screen/map_screen/travel_tracking_page.dart';
+import 'package:comeloso_app/screen/travel_oso/tavel_oso_restaurants.dart';
 import 'package:comeloso_app/screen/travel_oso/travel_oso_tracking_page.dart';
 import 'package:comeloso_app/screen/vendor_screen/widgets/product_item_card.dart';
 import 'package:comeloso_app/services/remote_services.dart';
@@ -229,10 +230,11 @@ class _TravelOsoState extends State<TravelOso> {
                                       latitud: rest.latitud!,
                                       longitud: rest.longitud!);
                                 },
-                                child: ProductItem(
+                                child: RestaurantOsoItem(
                                   imagePath: rest.imagen!,
                                   title: rest.nombre!,
                                   detail: rest.descripcion ?? "Nada",
+                                  address: rest.direccion!,
                                 ),
                               );
                             },
