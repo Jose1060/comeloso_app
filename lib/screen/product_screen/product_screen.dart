@@ -11,8 +11,10 @@ import 'package:comeloso_app/widgets/button/buttons.dart';
 import 'package:comeloso_app/screen/product_screen/widgets/product_info_text.dart';
 
 class ProductScreen extends StatefulWidget {
-  const ProductScreen({Key? key, required this.itemCard}) : super(key: key);
+  const ProductScreen({Key? key, required this.itemCard, required this.titulo})
+      : super(key: key);
   final Carta itemCard;
+  final String titulo;
 
   @override
   _ProductScreenState createState() => _ProductScreenState();
@@ -79,6 +81,17 @@ class _ProductScreenState extends State<ProductScreen> {
             children: [
               CustomAppBar(
                 onBackTap: _navigateBack,
+                showOptions: false,
+              ),
+              FadeAnimation(
+                duration: const Duration(milliseconds: 4550),
+                child: Center(
+                  child: Text(
+                    widget.titulo,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 30),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 50 * SizeConfig.heightMultiplier,
@@ -118,18 +131,18 @@ class _ProductScreenState extends State<ProductScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const <Widget>[
+                              children: <Widget>[
                                 ProductInfoText(
-                                  text: 'Weight',
-                                  value: '400g',
+                                  text: 'Rating',
+                                  value: widget.itemCard.ranking!.toString(),
                                 ),
-                                ProductInfoText(
-                                  text: 'Calories',
+                                const ProductInfoText(
+                                  text: 'Calorias',
                                   value: '567 Cal',
                                 ),
-                                ProductInfoText(
-                                  text: 'People',
-                                  value: '1 Person',
+                                const ProductInfoText(
+                                  text: 'Cantidad',
+                                  value: '1 Persona',
                                 ),
                               ],
                             ),
@@ -154,67 +167,78 @@ class _ProductScreenState extends State<ProductScreen> {
                       children: <Widget>[
                         Text(
                           widget.itemCard.nombre!,
-                          style: Theme.of(context).textTheme.headline4,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline2!
+                              .copyWith(fontSize: rf(40)),
+                        ),
+                        Divider(
+                          height: 30,
+                          thickness: 6,
+                          color: Colors.grey.shade400,
                         ),
                         SizedBox(height: rh(space1x)),
                         Text(
-                          widget.itemCard.precio.toString(),
+                          "S/.${widget.itemCard.precio.toString()}",
                           style:
                               Theme.of(context).textTheme.headline4!.copyWith(
                                     color: Theme.of(context).primaryColorDark,
-                                    fontSize: rf(18),
+                                    fontSize: rf(25),
                                     fontWeight: FontWeight.normal,
                                   ),
                         ),
                         SizedBox(height: rh(space2x)),
                         Text(
                           widget.itemCard.detalle!,
-                          style: Theme.of(context).textTheme.bodyText2,
+                          style:
+                              Theme.of(context).textTheme.bodyText2!.copyWith(
+                                    fontSize: rf(18),
+                                  ),
                         ),
                       ],
                     ),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: space2x,
-                  vertical: space5x,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: Colors.white,
-                      ),
-                      child: Buttons.icon(
-                        context: context,
-                        icon: Icons.favorite_border,
-                        size: 28,
-                        iconColor: Theme.of(context).primaryColorDark,
-                        top: space2x,
-                        left: space2x,
-                        right: space2x,
-                        bottom: space2x,
-                        semanticLabel: 'Favorite',
-                        onPressed: () {},
-                      ),
-                    ),
-                    SizedBox(width: rw(space2x)),
-                    Expanded(
-                      child: Buttons.flexible(
-                        vPadding: 20,
-                        borderRadius: 15,
-                        context: context,
-                        text: 'Add to Cart',
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(
+              //     horizontal: space2x,
+              //     vertical: space5x,
+              //   ),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: <Widget>[
+              //       Container(
+              //         decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.circular(15),
+              //           color: Colors.white,
+              //         ),
+              //         child: Buttons.icon(
+              //           context: context,
+              //           icon: Icons.favorite_border,
+              //           size: 28,
+              //           iconColor: Theme.of(context).primaryColorDark,
+              //           top: space2x,
+              //           left: space2x,
+              //           right: space2x,
+              //           bottom: space2x,
+              //           semanticLabel: 'Favorite',
+              //           onPressed: () {},
+              //         ),
+              //       ),
+              //       SizedBox(width: rw(space2x)),
+              //       Expanded(
+              //         child: Buttons.flexible(
+              //           vPadding: 20,
+              //           borderRadius: 15,
+              //           context: context,
+              //           text: 'Add to Cart',
+              //           onPressed: () {},
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),

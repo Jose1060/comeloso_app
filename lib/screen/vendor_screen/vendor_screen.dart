@@ -63,10 +63,11 @@ class _VendorScreenState extends State<VendorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    void handleNavigate(BuildContext context, Carta itemCard) {
+    void handleNavigate(BuildContext context, Carta itemCard, String titulo) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (_) => ProductScreen(
           itemCard: itemCard,
+          titulo: titulo,
         ),
       ));
     }
@@ -118,6 +119,10 @@ class _VendorScreenState extends State<VendorScreen> {
                           title: widget.restaurant.nombre!,
                           rating: widget.restaurant.promedio!,
                           sideImagePath: widget.restaurant.imagen!,
+                          reviews: widget.restaurant.nCalificaciones!,
+                          descripcion: widget.restaurant.descripcion ??
+                              "Sin descripcion",
+                          etiqueta: widget.restaurant.etiquetas![0],
                         ),
                       ),
                     ),
@@ -144,17 +149,18 @@ class _VendorScreenState extends State<VendorScreen> {
                       );
                     },
                     itemBuilder: (BuildContext context, int index) {
-                      final itemCarta = widget.restaurant.carta!;
+                      final itemCarta = widget.restaurant.carta![index];
                       return GestureDetector(
                         onTap: (() {
-                          handleNavigate(context, itemCarta[index]);
+                          handleNavigate(
+                              context, itemCarta, widget.restaurant.nombre!);
                         }),
                         child: ProductItem(
-                          imagePath: itemCarta[index].imagen!,
-                          title: itemCarta[index].nombre!,
-                          detail: itemCarta[index].detalle!,
-                          precio: itemCarta[index].precio!,
-                          ranking: itemCarta[index].precio!,
+                          imagePath: itemCarta.imagen!,
+                          title: itemCarta.nombre!,
+                          detail: itemCarta.detalle!,
+                          precio: itemCarta.precio!,
+                          ranking: itemCarta.precio!,
                         ),
                       );
                     },

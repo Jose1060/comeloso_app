@@ -57,7 +57,7 @@ class _CategoryListViewState extends State<CategoryListView> {
               handleNavigateOso(context);
             },
             child: CategoryItem(
-                name: "Vamo a caminar",
+                name: "Viaje",
                 backgroundColor: const Color(0xfff2e3db),
                 icon: const FaIcon(FontAwesomeIcons.compass)),
           ),

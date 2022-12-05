@@ -35,26 +35,6 @@ class _TravelOsoState extends State<TravelOso> {
   late RiveAnimationController _controller;
   LocationData? currentLocation;
 
-  _navigate({required double latitud, required double longitud}) async {
-    await _animateContainerFromBottomToTop();
-
-    //push to products screen
-    //wait till product is pooped
-    // ignore: use_build_context_synchronously
-    await Navigation.push(
-      context,
-      customPageTransition: PageTransition(
-        child: TravelOsoTrackingPage(
-          destLat: latitud,
-          destLong: longitud,
-        ),
-        type: PageTransitionType.fadeIn,
-      ),
-    );
-
-    await _animateContainerFromTopToBottom();
-  }
-
   _navigateBack() async {
     await _animateContainerFromBottomToTop();
 
@@ -123,11 +103,13 @@ class _TravelOsoState extends State<TravelOso> {
     void handleNavigatMap(
         {required BuildContext context,
         required double latitud,
-        required double longitud}) {
+        required double longitud,
+        required Restaurant restaurante}) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (_) => TravelOsoTrackingPage(
                 destLat: latitud,
                 destLong: longitud,
+                restaurante: restaurante,
               )));
     }
 
@@ -184,8 +166,8 @@ class _TravelOsoState extends State<TravelOso> {
                   child: currentLocation == null
                       ? CircularProgressIndicator()
                       : SizedBox(
-                          height: 155,
-                          width: 155,
+                          height: 165,
+                          width: 165,
                           child: RiveAnimation.asset(
                             artboard: "compass",
                             'lib/assets/rive/travel_icon.riv',
@@ -207,7 +189,6 @@ class _TravelOsoState extends State<TravelOso> {
                       future: futureRestaurant,
                       builder: (BuildContext context, restaurantsSnap) {
                         if (restaurantsSnap.hasData) {
-                          print("hay datos");
                           return ListView.separated(
                             itemCount: restaurantsSnap.data!.length,
                             padding: EdgeInsets.zero,
@@ -228,7 +209,8 @@ class _TravelOsoState extends State<TravelOso> {
                                   handleNavigatMap(
                                       context: context,
                                       latitud: rest.latitud!,
-                                      longitud: rest.longitud!);
+                                      longitud: rest.longitud!,
+                                      restaurante: rest);
                                 },
                                 child: RestaurantOsoItem(
                                   imagePath: rest.imagen!,

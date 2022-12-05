@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:comeloso_app/animations/animations.dart';
 import 'package:comeloso_app/constants/map.dart';
 import 'package:comeloso_app/constants/ui_constants.dart';
+import 'package:comeloso_app/models/restaurant.dart';
 import 'package:comeloso_app/screen/home_screen/widgets/clipped_container.dart';
 import 'package:comeloso_app/screen/product_screen/product_screen.dart';
+import 'package:comeloso_app/screen/vendor_screen/vendor_screen.dart';
 import 'package:comeloso_app/screen/vendor_screen/widgets/vendor_info_card.dart';
 import 'package:comeloso_app/utils/navigation.dart';
 import 'package:comeloso_app/utils/size_config.dart';
@@ -16,13 +18,17 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:rive/rive.dart';
 
 class TravelOsoTrackingPage extends StatefulWidget {
   const TravelOsoTrackingPage(
-      {super.key, required this.destLong, required this.destLat});
+      {super.key,
+      required this.destLong,
+      required this.destLat,
+      required this.restaurante});
   final double destLong;
   final double destLat;
-
+  final Restaurant restaurante;
   @override
   State<TravelOsoTrackingPage> createState() => _TravelOsoTrackingPageState();
 }
@@ -133,6 +139,14 @@ class _TravelOsoTrackingPageState extends State<TravelOsoTrackingPage> {
 
   @override
   Widget build(BuildContext context) {
+    void handleNavigate(BuildContext context, Restaurant rest) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => VendorScreen(
+          restaurant: rest,
+        ),
+      ));
+    }
+
     print(polylineCoordinates);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
@@ -146,7 +160,9 @@ class _TravelOsoTrackingPageState extends State<TravelOsoTrackingPage> {
         ),
         child: currentLocation == null
             ? const Center(
-                child: Text("Loading"),
+                child: RiveAnimation.asset(
+                  'lib/assets/rive/delivery.riv',
+                ),
               )
             : Stack(
                 children: [
@@ -184,14 +200,22 @@ class _TravelOsoTrackingPageState extends State<TravelOsoTrackingPage> {
                   Positioned(
                     bottom: 0,
                     right: 0,
-                    child: ClippedContainer(
-                      backgroundColor: Colors.white,
-                      height: rh(150),
-                      child: VendorInfoCard(
-                        title: 'New York Donut',
-                        rating: 4.2,
-                        sideImagePath:
-                            'https://micevichedehoy.com/wp-content/uploads/2018/10/ceviche-de-marisco_700x465.jpg',
+                    child: GestureDetector(
+                      onLongPress: () {
+                        handleNavigate(context, widget.restaurante);
+                      },
+                      child: ClippedContainer(
+                        backgroundColor: Colors.white,
+                        height: rh(150),
+                        child: VendorInfoCard(
+                          title: widget.restaurante.nombre!,
+                          rating: widget.restaurante.promedio!,
+                          sideImagePath: widget.restaurante.imagen!,
+                          reviews: widget.restaurante.nCalificaciones!,
+                          descripcion: widget.restaurante.descripcion ??
+                              "Sin descripcion",
+                          etiqueta: widget.restaurante.etiquetas![0],
+                        ),
                       ),
                     ),
                   ),

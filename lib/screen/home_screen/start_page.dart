@@ -263,16 +263,12 @@ class _StartPageState extends State<StartPage> {
                                     child: Text(snapshot.error.toString()),
                                   );
                                 } else if (restaurantsSnap.hasData == false) {
-                                  print("no hay datos");
-                                  return const SizedBox(
-                                    height: 300,
-                                    child: Center(
-                                        child: Text(
-                                      "No hay restaurantes :,v",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 40),
-                                    )),
-                                  );
+                                  return const Center(
+                                      child: Text(
+                                    "No se encontraron restaurantes",
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 20),
+                                  ));
                                 } else {
                                   return const Center(
                                     child: CircularProgressIndicator(),

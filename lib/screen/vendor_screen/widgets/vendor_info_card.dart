@@ -8,12 +8,18 @@ class VendorInfoCard extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.rating,
-      required this.sideImagePath})
+      required this.sideImagePath,
+      required this.etiqueta,
+      required this.descripcion,
+      required this.reviews})
       : super(key: key);
 
   final String title;
   final double rating;
   final String sideImagePath;
+  final String etiqueta;
+  final String descripcion;
+  final int reviews;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -58,8 +64,11 @@ class VendorInfoCard extends StatelessWidget {
                         .headline6!
                         .copyWith(fontSize: rf(12)),
                   ),
+                  SizedBox(
+                    width: 10,
+                  ),
                   Text(
-                    " • fast food • \$\$ • 15-20 min",
+                    descripcion,
                     style: Theme.of(context).textTheme.bodyText1!.copyWith(
                           color: Colors.grey.shade400,
                           fontSize: rf(12),
@@ -82,7 +91,7 @@ class VendorInfoCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(
-                      "Free delivery",
+                      etiqueta,
                       style: Theme.of(context)
                           .textTheme
                           .headline6!
@@ -93,7 +102,7 @@ class VendorInfoCard extends StatelessWidget {
                     width: rw(space2x),
                   ),
                   Text(
-                    "21 reviews",
+                    reviews.toString(),
                     style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           color: Colors.grey.shade400,
                           fontSize: rf(12),

@@ -16,6 +16,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:rive/rive.dart';
 
 class TravelTrackingPage extends StatefulWidget {
   const TravelTrackingPage({super.key});
@@ -130,7 +131,9 @@ class _TravelTrackingPageState extends State<TravelTrackingPage> {
         ),
         child: currentLocation == null
             ? const Center(
-                child: Text("Loading"),
+                child: RiveAnimation.asset(
+                  'lib/assets/rive/delivery.riv',
+                ),
               )
             : Stack(
                 children: [
@@ -139,45 +142,16 @@ class _TravelTrackingPageState extends State<TravelTrackingPage> {
                         target: LatLng(currentLocation!.latitude!,
                             currentLocation!.longitude!),
                         zoom: 13.5),
-                    polylines: {
-                      Polyline(
-                          polylineId: PolylineId("route"),
-                          points: polylineCoordinates,
-                          color: primaryColor,
-                          width: 6),
-                    },
                     markers: {
                       Marker(
                         markerId: MarkerId("currentLocation"),
                         position: LatLng(currentLocation!.latitude!,
                             currentLocation!.longitude!),
                       ),
-                      Marker(
-                        markerId: MarkerId("source"),
-                        position: sourceLocation,
-                      ),
-                      Marker(
-                        markerId: MarkerId("destination"),
-                        position: destination,
-                      ),
                     },
                     onMapCreated: (mapController) {
                       _controller.complete(mapController);
                     },
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: ClippedContainer(
-                      backgroundColor: Colors.white,
-                      height: rh(150),
-                      child: VendorInfoCard(
-                        title: 'New York Donut',
-                        rating: 4.2,
-                        sideImagePath:
-                            'https://micevichedehoy.com/wp-content/uploads/2018/10/ceviche-de-marisco_700x465.jpg',
-                      ),
-                    ),
                   ),
                 ],
               ),
