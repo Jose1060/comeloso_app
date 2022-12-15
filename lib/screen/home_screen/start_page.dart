@@ -131,166 +131,169 @@ class _StartPageState extends State<StartPage> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: SlideAnimation(
-        begin: const Offset(0, 400),
-        duration: _duration,
-        child: AnimatedContainer(
-          height: _height,
+      body: SafeArea(
+        child: SlideAnimation(
+          begin: const Offset(0, 400),
           duration: _duration,
-          padding: EdgeInsets.only(bottom: rh(20)),
-          curve: Curves.fastOutSlowIn,
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-          ),
-          child: StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('users')
-                .doc(user.uid.toString())
-                .snapshots(),
-            builder: ((context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              if (snapshot.hasData && snapshot.data!.exists) {
-                final userData = snapshot.data!;
-                final userDataOso = UserOso.fromDocumentSnapshot(userData);
-                provider.userOso = userDataOso;
-                UserOso globalUser = provider.userOso!;
-                return SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CustomAppBar(
-                        hasBackButton: false,
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: space2x),
-                        child: RichText(
-                          text: TextSpan(
-                            text: "Hola, ",
+          child: AnimatedContainer(
+            height: _height,
+            duration: _duration,
+            padding: EdgeInsets.only(bottom: rh(20)),
+            curve: Curves.fastOutSlowIn,
+            decoration: BoxDecoration(
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(user.uid.toString())
+                  .snapshots(),
+              builder: ((context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (snapshot.hasData && snapshot.data!.exists) {
+                  final userData = snapshot.data!;
+                  final userDataOso = UserOso.fromDocumentSnapshot(userData);
+                  provider.userOso = userDataOso;
+                  UserOso globalUser = provider.userOso!;
+                  return SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const CustomAppBar(
+                          hasBackButton: false,
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: space2x),
+                          child: RichText(
+                            text: TextSpan(
+                              text: "Hola, ",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1!
+                                  .copyWith(
+                                      fontSize: rf(24),
+                                      fontWeight: FontWeight.normal),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: globalUser.nombre!.split(' ').first,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline6!
+                                      .copyWith(
+                                        fontSize: rf(24),
+                                      ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              const EdgeInsets.symmetric(horizontal: space2x),
+                          child: Text(
+                            "Pasos realizados ${userDataOso.puntos}",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1!
-                                .copyWith(
-                                    fontSize: rf(24),
-                                    fontWeight: FontWeight.normal),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: globalUser.nombre!.split(' ').first,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline6!
-                                    .copyWith(
-                                      fontSize: rf(24),
-                                    ),
-                              )
-                            ],
+                                .copyWith(fontSize: rf(12), height: 1.5),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: space2x),
-                        child: Text(
-                          "Pasos realizados ${userDataOso.puntos}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1!
-                              .copyWith(fontSize: rf(12), height: 1.5),
+                        SizedBox(height: rh(20)),
+                        ClippedContainer(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                          child: const CategoryListView(), //! Aca esta la vaina
                         ),
-                      ),
-                      SizedBox(height: rh(20)),
-                      ClippedContainer(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.secondary,
-                        child: const CategoryListView(), //! Aca esta la vaina
-                      ),
-                      SizedBox(
-                        height: rh(space5x),
-                      ),
-                      FadeAnimation(
-                        intervalStart: 0.4,
-                        duration: const Duration(milliseconds: 2250),
-                        child: SlideAnimation(
-                          begin: const Offset(0, 100),
+                        SizedBox(
+                          height: rh(space5x),
+                        ),
+                        FadeAnimation(
                           intervalStart: 0.4,
                           duration: const Duration(milliseconds: 2250),
-                          child: FutureBuilder(
-                              future: RemoteService().getRestaurants(),
-                              builder: (BuildContext context, restaurantsSnap) {
-                                //final restaurants =
-                                //Restaurant.fromJson(snapshot.data!.data()!);
+                          child: SlideAnimation(
+                            begin: const Offset(0, 100),
+                            intervalStart: 0.4,
+                            duration: const Duration(milliseconds: 2250),
+                            child: FutureBuilder(
+                                future: RemoteService().getRestaurants(),
+                                builder:
+                                    (BuildContext context, restaurantsSnap) {
+                                  //final restaurants =
+                                  //Restaurant.fromJson(snapshot.data!.data()!);
 
-                                if (restaurantsSnap.hasData) {
-                                  return ListView.separated(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: restaurantsSnap.data!.length,
-                                    scrollDirection: Axis.vertical,
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    separatorBuilder:
-                                        (BuildContext context, int index) {
-                                      return Divider(
-                                        height: rh(space4x),
-                                        endIndent: rw(20),
-                                        indent: rw(20),
-                                      );
-                                    },
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      var rest = restaurantsSnap.data![index];
-                                      print("Hola 🐻‍❄️$rest");
-                                      return GestureDetector(
-                                          onTap: () {
-                                            handleNavigate(context, rest);
-                                          },
-                                          child: VendorCard(
-                                            imagePath: rest.imagen!,
-                                            name: rest.nombre!,
-                                            rating: rest.promedio!.toString(),
-                                            etiqueta: rest.etiquetas![0],
-                                            address: rest.direccion!,
-                                          ));
-                                    },
-                                  );
-                                } else if (restaurantsSnap.hasError) {
-                                  return Center(
-                                    child: Text(snapshot.error.toString()),
-                                  );
-                                } else if (restaurantsSnap.hasData == false) {
-                                  return const Center(
-                                      child: Text(
-                                    "No se encontraron restaurantes",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 20),
-                                  ));
-                                } else {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
-                              }),
-                        ),
-                      )
-                    ],
+                                  if (restaurantsSnap.hasData) {
+                                    return ListView.separated(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: restaurantsSnap.data!.length,
+                                      scrollDirection: Axis.vertical,
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return Divider(
+                                          height: rh(space4x),
+                                          endIndent: rw(20),
+                                          indent: rw(20),
+                                        );
+                                      },
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        var rest = restaurantsSnap.data![index];
+                                        print("Hola 🐻‍❄️$rest");
+                                        return GestureDetector(
+                                            onTap: () {
+                                              handleNavigate(context, rest);
+                                            },
+                                            child: VendorCard(
+                                              imagePath: rest.imagen!,
+                                              name: rest.nombre!,
+                                              rating: rest.promedio!.toString(),
+                                              etiqueta: rest.etiquetas![0],
+                                              address: rest.direccion!,
+                                            ));
+                                      },
+                                    );
+                                  } else if (restaurantsSnap.hasError) {
+                                    return Center(
+                                      child: Text(snapshot.error.toString()),
+                                    );
+                                  } else if (restaurantsSnap.hasData == false) {
+                                    return const Center(
+                                        child: Text(
+                                      "No se encontraron restaurantes",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 20),
+                                    ));
+                                  } else {
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  }
+                                }),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                }
+                return Center(
+                  child: Text(
+                    "Hola",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1!
+                        .copyWith(fontSize: rf(12), height: 1.5),
                   ),
                 );
-              }
-              return Center(
-                child: Text(
-                  "Hola",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(fontSize: rf(12), height: 1.5),
-                ),
-              );
-            }),
+              }),
+            ),
           ),
         ),
       ),

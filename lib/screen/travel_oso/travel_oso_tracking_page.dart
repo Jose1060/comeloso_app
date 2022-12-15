@@ -25,9 +25,13 @@ class TravelOsoTrackingPage extends StatefulWidget {
       {super.key,
       required this.destLong,
       required this.destLat,
-      required this.restaurante});
+      required this.restaurante,
+      required this.currentLat,
+      required this.currentLong});
   final double destLong;
   final double destLat;
+  final double currentLat;
+  final double currentLong;
   final Restaurant restaurante;
   @override
   State<TravelOsoTrackingPage> createState() => _TravelOsoTrackingPageState();
@@ -133,7 +137,7 @@ class _TravelOsoTrackingPageState extends State<TravelOsoTrackingPage> {
   @override
   void initState() {
     _controllerRive = SimpleAnimation('Move', autoplay: true);
-    sourceLocation = LatLng(-16.376027177050197, -71.50814298847764);
+    sourceLocation = LatLng(widget.currentLat, widget.currentLong);
     destination = LatLng(widget.destLat, widget.destLong);
     getCurrentLocation();
     getPolylinesPoints(

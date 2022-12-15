@@ -110,6 +110,8 @@ class _TravelOsoState extends State<TravelOso> {
                 destLat: latitud,
                 destLong: longitud,
                 restaurante: restaurante,
+                currentLat: currentLocation!.latitude!,
+                currentLong: currentLocation!.longitude!,
               )));
     }
 
