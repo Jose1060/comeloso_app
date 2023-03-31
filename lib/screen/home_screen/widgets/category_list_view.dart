@@ -69,15 +69,6 @@ class _CategoryListViewState extends State<CategoryListView> {
           ),
           GestureDetector(
             onTap: () {
-              handleNavigatProfile(context);
-            },
-            child: CategoryItem(
-                name: "Perfil",
-                backgroundColor: const Color(0xfff2e3db),
-                icon: const FaIcon(FontAwesomeIcons.userAstronaut)),
-          ),
-          GestureDetector(
-            onTap: () {
               handleNavigateConfig(context);
             },
             child: CategoryItem(

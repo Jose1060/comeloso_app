@@ -167,7 +167,7 @@ class _StartPageState extends State<StartPage> {
                         const CustomAppBar(
                           hasBackButton: false,
                           showOptions:
-                              true, //* Cambiar para que no se muestre el boton de logout
+                              false, //* Cambiar para que no se muestre el boton de logout
                           title: "Comeloso",
                         ),
                         Padding(
