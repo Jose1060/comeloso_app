@@ -1,0 +1,19 @@
+query GetRestaurante($getRestauranteId: ID) {
+	getRestaurante(id: $getRestauranteId) {
+		id
+		imagen
+		descripcion
+		latitud
+		longitud
+		nombre
+		telefono
+		total_puntos
+		email
+		etiquetas
+		direccion
+		calificaciones {
+			calificacion
+		}
+		N_calificaciones
+	}
+}

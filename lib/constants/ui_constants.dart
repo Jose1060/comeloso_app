@@ -22,7 +22,7 @@ class AppStyle {
   ];
 
   static TextStyle mainTitle =
-      GoogleFonts.roboto(fontSize: 20.0, fontWeight: FontWeight.bold);
+      GoogleFonts.roboto(fontSize: 10.0, fontWeight: FontWeight.w400);
   static TextStyle separatorText =
       GoogleFonts.nunito(fontSize: 25.0, fontWeight: FontWeight.w600);
   static TextStyle phoneTitle = GoogleFonts.roboto(
@@ -35,6 +35,49 @@ class AppStyle {
       GoogleFonts.nunito(fontSize: 16.0, fontWeight: FontWeight.normal);
   static TextStyle inputTextStyle =
       GoogleFonts.roboto(fontSize: 10.0, fontWeight: FontWeight.w500);
+
+  // Headers textStyle
+
+  static TextStyle headerTextStyle = GoogleFonts.lato(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: Colors.white,
+  );
+  static TextStyle titlesH1 = GoogleFonts.lato(
+    fontSize: 30,
+    fontWeight: FontWeight.w600,
+    color: Colors.black,
+  );
+
+  static TextStyle titlesH2 = GoogleFonts.lato(
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+    color: Colors.black,
+  );
+
+  static TextStyle paragraph1 = GoogleFonts.lato(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
+
+  static TextStyle paragraph2 = GoogleFonts.lato(
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    color: Colors.black,
+  );
+
+  static TextStyle textOut1 = GoogleFonts.lato(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: Colors.grey.shade100,
+  );
+
+  static TextStyle textIn1 = GoogleFonts.lato(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: Colors.grey.shade600,
+  );
 }
 
 const textStyle = TextStyle(

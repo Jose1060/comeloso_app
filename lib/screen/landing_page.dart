@@ -1,5 +1,5 @@
 import 'package:comeloso_app/constants/ui_constants.dart';
-import 'package:comeloso_app/pages/login_page.dart';
+import 'package:comeloso_app/screen/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:rive/rive.dart';
 
