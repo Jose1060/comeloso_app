@@ -1,4 +1,6 @@
 import 'package:comeloso_app/models/restaurant.dart';
+import 'package:comeloso_app/screen/home_page.dart';
+import 'package:comeloso_app/screen/home_screen/start_page.dart';
 import 'package:flutter/material.dart';
 import 'package:comeloso_app/animations/fade_animation.dart';
 import 'package:comeloso_app/animations/scale_animation.dart';
@@ -9,14 +11,56 @@ import 'package:comeloso_app/utils/ui_helper.dart';
 import 'package:comeloso_app/widgets/app_bar/custom_app_bar.dart';
 import 'package:comeloso_app/widgets/button/buttons.dart';
 import 'package:comeloso_app/screen/product_screen/widgets/product_info_text.dart';
+import 'package:comeloso_app/provider/google_sign_in.dart';
+import 'package:provider/provider.dart';
+
+import '../profile_screen/profile_user.dart';
 
 class ConfiguracionItem {
   final String titulo;
   final IconData icono;
-  final VoidCallback onTap;
+  final void Function(BuildContext context) onTap;
 
   ConfiguracionItem(
       {required this.titulo, required this.icono, required this.onTap});
+}
+
+Future<void> mostrarModalConfirmacionCerrarSesion(BuildContext context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Confirmación'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('¿Está seguro de que desea cerrar sesión?'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Cancelar'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: Text('Confirmar'),
+            onPressed: () async {
+              // Agregar el código para cerrar sesión
+              final provider =
+                  Provider.of<GoogleSignInProvider>(context, listen: false);
+              await provider.logout();
+              Navigator.of(context).pop();
+              handleNavigatHome(context);
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
 
 class ConfiguracionList extends StatelessWidget {
@@ -41,11 +85,19 @@ class ConfiguracionList extends StatelessWidget {
         return ListTile(
           leading: Icon(item.icono),
           title: Text(item.titulo),
-          onTap: item.onTap,
+          onTap: () => item.onTap(context),
         );
       },
     );
   }
+}
+
+void handleNavigatProfile(BuildContext context) {
+  Navigator.of(context).push(MaterialPageRoute(builder: (_) => ProfileUser()));
+}
+
+void handleNavigatHome(BuildContext context) {
+  Navigator.of(context).push(MaterialPageRoute(builder: (_) => HomePage()));
 }
 
 class ConfigScreen extends StatefulWidget {
@@ -65,22 +117,15 @@ class _ConfigScreenState extends State<ConfigScreen> {
     ConfiguracionItem(
       titulo: 'Perfil',
       icono: Icons.person,
-      onTap: () {
-        // Acción cuando se presiona el elemento 'Perfil'
+      onTap: (BuildContext context) {
+        handleNavigatProfile(context);
       },
     ),
     ConfiguracionItem(
-      titulo: 'Notificaciones',
-      icono: Icons.notifications,
-      onTap: () {
-        // Acción cuando se presiona el elemento 'Notificaciones'
-      },
-    ),
-    ConfiguracionItem(
-      titulo: 'Cuenta',
+      titulo: 'Cerrar sesión',
       icono: Icons.account_circle,
-      onTap: () {
-        // Acción cuando se presiona el elemento 'Cuenta'
+      onTap: (BuildContext context) {
+        mostrarModalConfirmacionCerrarSesion(context);
       },
     ),
     // Agregar más elementos según sea necesario
