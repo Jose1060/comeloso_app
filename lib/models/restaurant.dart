@@ -141,7 +141,7 @@ class Carta {
   String? detalle;
   String? imagen;
   double? precio;
-  int? ranking;
+  double? ranking;
   String? id;
 
   factory Carta.fromJson(Map<String, dynamic> json) => Carta(
@@ -149,7 +149,7 @@ class Carta {
         detalle: json["detalle"],
         imagen: json["imagen"],
         precio: json["precio"].toDouble(),
-        ranking: json["ranking"],
+        ranking: json["ranking"].toDouble(),
         id: json["_id"],
       );
 

@@ -137,33 +137,41 @@ class _VendorScreenState extends State<VendorScreen> {
                   begin: const Offset(0, 100),
                   intervalStart: 0.4,
                   duration: const Duration(milliseconds: 1250),
-                  child: ListView.separated(
-                    itemCount: widget.restaurant.carta!.length,
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return Divider(
-                        height: rh(space4x),
-                        endIndent: rw(20),
-                        indent: rw(20),
-                      );
-                    },
-                    itemBuilder: (BuildContext context, int index) {
-                      final itemCarta = widget.restaurant.carta![index];
-                      return GestureDetector(
-                        onTap: (() {
-                          handleNavigate(
-                              context, itemCarta, widget.restaurant.nombre!);
-                        }),
-                        child: ProductItem(
-                          imagePath: itemCarta.imagen!,
-                          title: itemCarta.nombre!,
-                          detail: itemCarta.detalle!,
-                          precio: itemCarta.precio!,
-                          ranking: itemCarta.precio!,
-                        ),
-                      );
-                    },
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        child: const Text("Platos de la carta"),
+                      ),
+                      ListView.separated(
+                        itemCount: widget.restaurant.carta!.length,
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        separatorBuilder: (BuildContext context, int index) {
+                          return Divider(
+                            height: rh(space4x),
+                            endIndent: rw(20),
+                            indent: rw(20),
+                          );
+                        },
+                        itemBuilder: (BuildContext context, int index) {
+                          final itemCarta = widget.restaurant.carta![index];
+                          return GestureDetector(
+                            onTap: (() {
+                              handleNavigate(context, itemCarta,
+                                  widget.restaurant.nombre!);
+                            }),
+                            child: ProductItem(
+                              imagePath: itemCarta.imagen!,
+                              title: itemCarta.nombre!,
+                              detail: itemCarta.detalle!,
+                              precio: itemCarta.precio!,
+                              ranking: itemCarta.precio!,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),

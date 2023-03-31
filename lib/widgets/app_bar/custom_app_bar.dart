@@ -70,18 +70,19 @@ class CustomAppBar extends StatelessWidget {
                       child: Row(
                         children: [
                           PlatformIcon(
-                            color: showOptions ? Colors.black : Colors.white,
+                            color: showOptions
+                                ? Colors.black
+                                : Colors.grey.shade500,
                           ),
                           Text(
                             'Back',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headline6!
-                                .copyWith(
-                                  fontSize: rf(14),
-                                  color:
-                                      showOptions ? Colors.black : Colors.white,
-                                ),
+                            style:
+                                Theme.of(context).textTheme.headline6!.copyWith(
+                                      fontSize: rf(14),
+                                      color: showOptions
+                                          ? Colors.black
+                                          : Colors.grey.shade500,
+                                    ),
                           ),
                         ],
                       ),

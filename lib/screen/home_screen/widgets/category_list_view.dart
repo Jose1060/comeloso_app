@@ -1,3 +1,4 @@
+import 'package:comeloso_app/screen/config_screen/config_screen.dart';
 import 'package:comeloso_app/screen/profile_screen/profile_user.dart';
 import 'package:comeloso_app/screen/travel_oso/travel_oso.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,11 @@ class _CategoryListViewState extends State<CategoryListView> {
           .push(MaterialPageRoute(builder: (_) => TravelOso()));
     }
 
+    void handleNavigateConfig(BuildContext context) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (_) => ConfigScreen()));
+    }
+
     return SizedBox(
       height: rh(120),
       child: ListView(
@@ -66,9 +72,18 @@ class _CategoryListViewState extends State<CategoryListView> {
               handleNavigatProfile(context);
             },
             child: CategoryItem(
-                name: "PerfilOso",
+                name: "Perfil",
                 backgroundColor: const Color(0xfff2e3db),
                 icon: const FaIcon(FontAwesomeIcons.userAstronaut)),
+          ),
+          GestureDetector(
+            onTap: () {
+              handleNavigateConfig(context);
+            },
+            child: CategoryItem(
+                name: "Configuracion",
+                backgroundColor: const Color(0xfff2e3db),
+                icon: const FaIcon(FontAwesomeIcons.toolbox)),
           )
         ],
       ),

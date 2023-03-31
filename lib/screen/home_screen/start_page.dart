@@ -166,6 +166,8 @@ class _StartPageState extends State<StartPage> {
                       children: [
                         const CustomAppBar(
                           hasBackButton: false,
+                          showOptions: false,
+                          title: "Comeloso",
                         ),
                         Padding(
                           padding:

@@ -6,7 +6,7 @@ import 'dart:ffi';
 import 'package:comeloso_app/models/restaurant.dart';
 import 'package:http/http.dart' as http;
 
-final String GlobalURL = "restaurantes-1-restaurantes-pr-2.up.railway.app";
+final String GlobalURL = "restaurantes-1-production.up.railway.app";
 
 class RemoteService {
   Future<List<Restaurant>?> getRestaurants() async {
@@ -54,7 +54,7 @@ class RemoteService {
       required List etiquetas}) async {
     final body = {"latitud": lat, "longitud": long, "etiquetas": etiquetas};
 
-    print(body);
+    print("🐯 ----> $body");
     final jsonString = json.encode(body);
     final encoding = Encoding.getByName('utf-8');
 

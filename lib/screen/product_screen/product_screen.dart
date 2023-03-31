@@ -133,12 +133,12 @@ class _ProductScreenState extends State<ProductScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 ProductInfoText(
-                                  text: 'Rating',
+                                  text: 'Calificación',
                                   value: widget.itemCard.ranking!.toString(),
                                 ),
                                 const ProductInfoText(
-                                  text: 'Calorias',
-                                  value: '567 Cal',
+                                  text: 'Numero de reseñas',
+                                  value: "20 reseñas",
                                 ),
                                 const ProductInfoText(
                                   text: 'Cantidad',
