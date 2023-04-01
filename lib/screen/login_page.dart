@@ -55,7 +55,7 @@ class LoginPage extends StatelessWidget {
                       height: 15,
                     ),
                     const Text(
-                      "Miles de restaurantes a tu disposicion",
+                      "Restaurantes a tu disposicion",
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.white,
@@ -117,7 +117,7 @@ class LoginPage extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: const [
                                     Text(
-                                      "LOG IN WITH GOOGLE",
+                                      "Inicia sesion con Google",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 13,
