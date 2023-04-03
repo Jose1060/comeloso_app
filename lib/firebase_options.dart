@@ -70,7 +70,8 @@ class DefaultFirebaseOptions {
     projectId: 'comeloso',
     databaseURL: 'https://comeloso-default-rtdb.firebaseio.com',
     storageBucket: 'comeloso.appspot.com',
-    iosClientId: '1017632833424-kd3hasep53fssbcgjf7p6kulkbuibl5t.apps.googleusercontent.com',
+    iosClientId:
+        '1017632833424-kd3hasep53fssbcgjf7p6kulkbuibl5t.apps.googleusercontent.com',
     iosBundleId: 'com.jose1060.comelosoApp',
   );
 
@@ -81,7 +82,8 @@ class DefaultFirebaseOptions {
     projectId: 'comeloso',
     databaseURL: 'https://comeloso-default-rtdb.firebaseio.com',
     storageBucket: 'comeloso.appspot.com',
-    iosClientId: '1017632833424-kd3hasep53fssbcgjf7p6kulkbuibl5t.apps.googleusercontent.com',
+    iosClientId:
+        '1017632833424-kd3hasep53fssbcgjf7p6kulkbuibl5t.apps.googleusercontent.com',
     iosBundleId: 'com.jose1060.comelosoApp',
   );
 }

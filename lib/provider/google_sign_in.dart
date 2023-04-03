@@ -9,6 +9,8 @@ import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
+import '../firebase_options.dart';
+
 enum AuthStatus {
   uninitialized,
   authenticated,
@@ -21,7 +23,8 @@ enum AuthStatus {
 }
 
 class GoogleSignInProvider extends ChangeNotifier {
-  final googleSignIn = GoogleSignIn();
+  final googleSignIn = GoogleSignIn(
+      clientId: DefaultFirebaseOptions.currentPlatform.iosClientId);
   GoogleSignInAccount? _user;
   UserOso? _userOso;
 
